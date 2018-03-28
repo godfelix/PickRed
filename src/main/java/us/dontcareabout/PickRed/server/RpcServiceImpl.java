@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import us.dontcareabout.PickRed.client.RpcService;
+import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.gwt.server.GFServiceServlet;
 import us.dontcareabout.gwt.server.WebSocketServer;
 
@@ -21,6 +22,11 @@ public class RpcServiceImpl extends GFServiceServlet implements RpcService {
 		wsServer = WebApplicationContextUtils
 			.getWebApplicationContext(this.getServletContext())
 			.getBean(WebSocketServer.class);
+	}
+
+	@Override
+	public Player getMyPlayer() {
+		return Faker.getPlayer(getSessionId());
 	}
 
 	@Override
