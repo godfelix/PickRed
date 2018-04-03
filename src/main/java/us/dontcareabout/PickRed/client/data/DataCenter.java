@@ -1,5 +1,7 @@
 package us.dontcareabout.PickRed.client.data;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -8,7 +10,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import us.dontcareabout.PickRed.client.RpcService;
 import us.dontcareabout.PickRed.client.RpcServiceAsync;
 import us.dontcareabout.PickRed.client.data.MyPlayerReadyEvent.MyPlayerReadyHandler;
+import us.dontcareabout.PickRed.client.data.TableDataReadyEvent.TableDataReadyHandler;
 import us.dontcareabout.PickRed.shared.Player;
+import us.dontcareabout.PickRed.shared.Table;
 
 public class DataCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
@@ -39,5 +43,44 @@ public class DataCenter {
 	public static Player getMyPlayer() {
 		return myPlayer;
 	}
-	//
+	// ======== //
+
+	// ==== Table ==== //
+	public static void createTable() {
+		rpc.createTable(new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
+
+	private static ArrayList<Table> tableList;
+
+	public static ArrayList<Table> getTableList() {
+		return tableList;
+	}
+
+	public static void wantTables() {
+		rpc.getTables(new AsyncCallback<ArrayList<Table>>() {
+			@Override
+			public void onSuccess(ArrayList<Table> result) {
+				tableList = result;
+				eventBus.fireEvent(new TableDataReadyEvent());
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
+
+	public static HandlerRegistration addTableDataReady(TableDataReadyHandler handler) {
+		return eventBus.addHandler(TableDataReadyEvent.TYPE, handler);
+	}
+	// ========= //
 }
