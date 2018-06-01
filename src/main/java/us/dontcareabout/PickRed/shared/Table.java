@@ -3,22 +3,26 @@ package us.dontcareabout.PickRed.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class Table implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String id;
-	private String masterId;
-	private final ArrayList<Player> playerList = new ArrayList<>();
+	private Player master;
+	private ArrayList<Player> playerList = new ArrayList<>();
 	private int max;
+	private Date createTime;
 
 	//just for GWT RPC
 	Table() {}
 
-	public Table(String id, String masterId) {
+	public Table(String id, Player master) {
 		this.id = id;
-		this.masterId = masterId;
+		this.master = master;
+		join(master);
+		createTime = new Date();
 	}
 
 	public boolean join(Player player) {
@@ -52,7 +56,11 @@ public class Table implements Serializable {
 		return id;
 	}
 
-	public String getMasterId() {
-		return masterId;
+	public Player getMaster() {
+		return master;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
 	}
 }

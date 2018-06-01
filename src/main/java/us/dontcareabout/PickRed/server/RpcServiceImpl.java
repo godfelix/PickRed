@@ -35,7 +35,7 @@ public class RpcServiceImpl extends GFServiceServlet implements RpcService {
 
 	@Override
 	public void createTable() {
-		tableCenter.create(getSessionId());
+		tableCenter.create(getMyPlayer());
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
 import us.dontcareabout.PickRed.shared.WsMsg;
 import us.dontcareabout.gwt.server.WebSocketServer;
@@ -23,8 +24,9 @@ public class TableCenter {
 		this.wsServer = wsServer;
 	}
 
-	public void create(String masterId) {
-		Table table = new Table(UUID.randomUUID().toString(), masterId);
+	public void create(Player master) {
+		Table table = new Table(UUID.randomUUID().toString(), master);
+		table.setMax(2);	//FIXME 改為自行指定
 		tables.put(table.getId(), table);
 
 		try {
