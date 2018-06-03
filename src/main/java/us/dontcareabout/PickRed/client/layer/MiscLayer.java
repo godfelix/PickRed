@@ -1,6 +1,8 @@
 package us.dontcareabout.PickRed.client.layer;
 
 import com.sencha.gxt.chart.client.draw.RGB;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
 import us.dontcareabout.PickRed.client.data.DataCenter;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
@@ -18,6 +20,12 @@ public class MiscLayer extends LayerSprite {
 		createTableBtn.setBgColor(RGB.RED);
 		createTableBtn.setBgRadius(10);
 		createTableBtn.setMargin(5);
+		createTableBtn.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				DataCenter.createTable();
+			}
+		});
 		add(createTableBtn);
 	}
 
@@ -28,9 +36,9 @@ public class MiscLayer extends LayerSprite {
 
 		myName.setLX(0);
 		myName.setLY(0);
-		myName.onResize(w - 5, 100);
-		createTableBtn.setLX(0);
-		createTableBtn.setLY(110);
-		createTableBtn.onResize(w - 5, h - 120);
+		myName.resize(200, h);
+		createTableBtn.setLX(205);
+		createTableBtn.setLY(0);
+		createTableBtn.resize(w - 210, h);
 	}
 }
