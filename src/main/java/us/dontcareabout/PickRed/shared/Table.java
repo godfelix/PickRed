@@ -18,15 +18,16 @@ public class Table implements Serializable {
 	//just for GWT RPC
 	Table() {}
 
-	public Table(String id, Player master) {
+	public Table(String id, Player master, int max) {
 		this.id = id;
 		this.master = master;
+		this.max = max;
 		join(master);
 		createTime = new Date();
 	}
 
 	public boolean join(Player player) {
-		if (!isFull()) { return false; }
+		if (isFull()) { return false; }
 
 		playerList.add(player);
 		return true;
@@ -46,10 +47,6 @@ public class Table implements Serializable {
 
 	public int getMax() {
 		return max;
-	}
-
-	public void setMax(int max) {
-		this.max = max;
 	}
 
 	public String getId() {
