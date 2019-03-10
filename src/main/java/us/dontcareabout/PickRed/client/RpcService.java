@@ -13,7 +13,7 @@ public interface RpcService extends RemoteService{
 	Player getMyPlayer();
 
 	ArrayList<Table> getTables();
-	void createTable();
+	Table createTable();
 
 	void broadcast(String message);
 }

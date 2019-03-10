@@ -24,7 +24,7 @@ public class TableCenter {
 		this.wsServer = wsServer;
 	}
 
-	public void create(Player master) {
+	public Table create(Player master) {
 		Table table = new Table(UUID.randomUUID().toString(), master);
 		table.setMax(2);	//FIXME 改為自行指定
 		tables.put(table.getId(), table);
@@ -34,6 +34,8 @@ public class TableCenter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		return table;
 	}
 
 	public ArrayList<Table> getTables() {

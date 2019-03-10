@@ -47,9 +47,9 @@ public class DataCenter {
 
 	// ==== Table ==== //
 	public static void createTable() {
-		rpc.createTable(new AsyncCallback<Void>() {
+		rpc.createTable(new AsyncCallback<Table>() {
 			@Override
-			public void onSuccess(Void result) {}
+			public void onSuccess(Table result) {}
 
 			@Override
 			public void onFailure(Throwable caught) {
