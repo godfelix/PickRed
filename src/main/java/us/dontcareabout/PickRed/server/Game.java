@@ -9,36 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Game {
-	private ArrayList<Player> players;
+	public ArrayList<Player> players;
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
-	private ArrayList<Card> cardsOnDesk = new ArrayList<>();
+	public ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
-	private Map<Player, ArrayList<Card>> handCard = new HashMap<>();
-	private Map<Player, ArrayList<Card>> cardsPicked = new HashMap<>();
+	public Map<Player, ArrayList<Card>> handCard = new HashMap<>();
+	public Map<Player, ArrayList<Card>> cardsPicked = new HashMap<>();
 
 	public Game(ArrayList<Player> players) {
 		this.players = players;
-		for(Card card:cards) {
-			System.out.print(card+", ");
-		}
-		System.out.println();
-
 		dealCard();
-
-		for(int idx =0;idx<4;idx++) {
-			System.out.println(handCard.get(players.get(idx)) +", "+cardsPicked.get(players.get(idx)));
-		}
-
-		System.out.println(cardsOnDesk);
-
-		pick(players.get(1), drawCard(),drawCard());
-		pick(players.get(3), drawCard(),drawCard());
-		pick(players.get(0), drawCard(),drawCard());
-
-		for(int idx =0;idx<4;idx++) {
-			System.out.println(handCard.get(players.get(idx)) +", "+cardsPicked.get(players.get(idx)));
-		}
 	}
 
 	private Card drawCard() {
