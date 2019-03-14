@@ -4,6 +4,7 @@ import us.dontcareabout.PickRed.shared.Card;
 import us.dontcareabout.PickRed.shared.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,9 +24,13 @@ public class Game {
 		}
 		System.out.println();
 
-		for(int i=0;i<52;i++) {
-			System.out.print(drawCard()+", ");
+		dealCard();
+
+		for(int idx =0;idx<4;idx++) {
+			System.out.println(handCard.get(players.get(idx)) +", "+cardsPicked.get(players.get(idx)));
 		}
+
+		System.out.println(cardsOnDesk);
 	}
 
 	private Card drawCard() {
@@ -33,7 +38,21 @@ public class Game {
 		return cards[cardIdx -1];
 	}
 
-	private void dealCard() {}
+	private void dealCard() {
+		Card[][] tempCards = new Card[4][6];
+
+		for(int j=0;j<6;j++) {
+			for(int i=0;i<4;i++) {
+				tempCards[i][j] = drawCard();
+			}
+		}
+
+		for(int idx =0;idx<4;idx++) {
+			cardsOnDesk.add(drawCard());
+			handCard.put(players.get(idx), new ArrayList<>(Arrays.asList(tempCards[idx])));
+			cardsPicked.put(players.get(idx), new ArrayList<Card>());
+		}
+	}
 
 	/**
 	 * 玩家撿牌。
