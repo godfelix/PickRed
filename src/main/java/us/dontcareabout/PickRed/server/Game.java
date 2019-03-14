@@ -10,14 +10,28 @@ import java.util.Map;
 public class Game {
 	private ArrayList<Player> players = new ArrayList<>();
 	private Card[] cards = Card.genDeck();
+	private int cardIdx = 0;
 	private ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
 	private Map<Player, ArrayList<Card>> handCard = new HashMap<>();
 	private Map<Player, ArrayList<Card>> cardsPicked = new HashMap<>();
 
-	public Game(ArrayList<Player> players) {}
+	public Game(ArrayList<Player> players) {
+		this.players = players;
+		for(Card card:cards) {
+			System.out.print(card+", ");
+		}
+		System.out.println();
 
-	private Card drawCard() {}
+		for(int i=0;i<52;i++) {
+			System.out.print(drawCard()+", ");
+		}
+	}
+
+	private Card drawCard() {
+		cardIdx +=1;
+		return cards[cardIdx -1];
+	}
 
 	private void dealCard() {}
 
