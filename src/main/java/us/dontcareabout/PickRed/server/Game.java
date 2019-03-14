@@ -22,7 +22,29 @@ public class Game {
 		dealCard();
 	}
 
-	private Card drawCard() {
+	/**
+	 * 玩家出排或翻牌
+	 */
+	public void playCard(Player player, Card card) {
+		for(Card cardDesk: cardsOnDesk) {
+			if(card.number<10) {
+				if(card.number + cardDesk.number == 10) {
+					cardsOnDesk.remove(cardDesk);
+					pick(player, card, cardDesk);
+					return;
+				}
+			} else if(card.number>=10) {
+				if (card.number == cardDesk.number) {
+					cardsOnDesk.remove(cardDesk);
+					pick(player, card, cardDesk);
+					return;
+				}
+			}
+		}
+		cardsOnDesk.add(card);
+	}
+
+	public Card drawCard() {
 		cardIdx +=1;
 		return cards[cardIdx -1];
 	}
