@@ -26,14 +26,14 @@ public class Game {
 	 * 玩家出排或翻牌
 	 */
 	public void playCard(Player player, Card card) {
-		for(Card cardDesk: cardsOnDesk) {
-			if(card.number<10) {
-				if(card.number + cardDesk.number == 10) {
+		for (Card cardDesk : cardsOnDesk) {
+			if (card.number < 10) {
+				if (card.number + cardDesk.number == 10) {
 					cardsOnDesk.remove(cardDesk);
 					pick(player, card, cardDesk);
 					return;
 				}
-			} else if(card.number>=10) {
+			} else if (card.number >= 10) {
 				if (card.number == cardDesk.number) {
 					cardsOnDesk.remove(cardDesk);
 					pick(player, card, cardDesk);
@@ -45,20 +45,20 @@ public class Game {
 	}
 
 	public Card drawCard() {
-		cardIdx +=1;
-		return cards[cardIdx -1];
+		cardIdx += 1;
+		return cards[cardIdx - 1];
 	}
 
 	private void dealCard() {
 		Card[][] tempCards = new Card[4][6];
 
-		for(int j=0;j<6;j++) {
-			for(int i=0;i<4;i++) {
+		for (int j = 0; j < 6; j++) {
+			for (int i = 0; i < 4; i++) {
 				tempCards[i][j] = drawCard();
 			}
 		}
 
-		for(int idx =0;idx<4;idx++) {
+		for (int idx = 0; idx < 4; idx++) {
 			cardsOnDesk.add(drawCard());
 			handCard.put(players.get(idx), new ArrayList<>(Arrays.asList(tempCards[idx])));
 			cardsPicked.put(players.get(idx), new ArrayList<Card>());
@@ -73,5 +73,6 @@ public class Game {
 		cardsPicked.get(player).add(card2);
 	}
 
-	private void score() {}
+	private void score() {
+	}
 }
