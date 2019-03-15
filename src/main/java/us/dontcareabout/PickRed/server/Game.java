@@ -1,6 +1,7 @@
 package us.dontcareabout.PickRed.server;
 
 import us.dontcareabout.PickRed.shared.Card;
+import us.dontcareabout.PickRed.shared.GMT;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Suit;
 
@@ -20,6 +21,7 @@ public class Game {
 
 	public Game(ArrayList<Player> players) {
 		this.players = players;
+		GMT.shuffling(cards);
 		dealCard();
 	}
 
