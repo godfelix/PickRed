@@ -26,10 +26,14 @@ public class Game {
 	}
 
 	/**
-	 * 玩家出排或翻牌
+	 * 玩家出排或翻牌，若能與桌牌能湊成10，則撿牌。
+	 * 撿分數最高的牌。
 	 */
 	public void playCard(Player player, Card card) {
-		for (Card cardDesk : cardsOnDesk) {
+		ArrayList<Card> sortedCardsOnDesk = new ArrayList(cardsOnDesk);
+		sortCardsByScore(sortedCardsOnDesk);
+
+		for (Card cardDesk : sortedCardsOnDesk) {
 			if (card.number < 10) {
 				if (card.number + cardDesk.number == 10) {
 					cardsOnDesk.remove(cardDesk);
@@ -111,5 +115,22 @@ public class Game {
 			number += handCard.get(player).size();
 		}
 		return number;
+	}
+
+	/**
+	 * 依照牌的分數由大到小排序。
+	 */
+	private void sortCardsByScore(ArrayList<Card> cards) {
+		int size = cards.size();
+
+		for (int i = size - 1; i > 0; i--) {
+			for (int j = 0; j < i; j++) {
+				if (score(cards.get(j)) < score(cards.get(j + 1))) {
+					Card temp = cards.get(j);
+					cards.set(j, cards.get(j + 1));
+					cards.set(j + 1, temp);
+				}
+			}
+		}
 	}
 }
