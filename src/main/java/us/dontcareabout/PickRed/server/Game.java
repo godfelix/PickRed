@@ -2,6 +2,7 @@ package us.dontcareabout.PickRed.server;
 
 import us.dontcareabout.PickRed.shared.Card;
 import us.dontcareabout.PickRed.shared.Player;
+import us.dontcareabout.PickRed.shared.Suit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +74,29 @@ public class Game {
 		cardsPicked.get(player).add(card2);
 	}
 
-	private void score() {
+	/**
+	 * @return 一張牌的分數
+	 */
+	public int score(Card card) {
+		if (card.number == 1) {
+			switch (card.suit) {
+				case club:
+					return 40;
+				case spade:
+					return 30;
+				case heart:
+					return 20;
+				case diamond:
+					return 20;
+			}
+		} else if (card.suit == Suit.heart || card.suit == Suit.diamond) {
+			if (card.number < 10) {
+				return card.number;
+			} else {
+				return 10;
+			}
+		}
+
+		return 0;
 	}
 }
