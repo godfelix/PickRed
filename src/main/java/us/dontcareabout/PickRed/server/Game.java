@@ -99,4 +99,15 @@ public class Game {
 
 		return 0;
 	}
+
+	/**
+	 * @return 所有玩家手中的牌數
+	 */
+	public int getAllHandCardNumber() {
+		int number = 0;
+		for (Player player : players) {
+			number += handCard.get(player).size();
+		}
+		return number;
+	}
 }
