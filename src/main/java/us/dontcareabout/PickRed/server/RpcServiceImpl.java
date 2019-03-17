@@ -39,6 +39,11 @@ public class RpcServiceImpl extends GFServiceServlet implements RpcService {
 	}
 
 	@Override
+	public boolean joinTable(String tableId) {
+		return tableCenter.join(tableId, getMyPlayer());
+	}
+
+	@Override
 	public ArrayList<Table> getTables() {
 		return tableCenter.getTables();
 	}

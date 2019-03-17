@@ -25,8 +25,7 @@ public class TableCenter {
 	}
 
 	public Table create(Player master) {
-		Table table = new Table(UUID.randomUUID().toString(), master);
-		table.setMax(2);	//FIXME 改為自行指定
+		Table table = new Table(UUID.randomUUID().toString(), master, 3);//FIXME 改為自行指定
 		tables.put(table.getId(), table);
 
 		try {
@@ -36,6 +35,24 @@ public class TableCenter {
 		}
 
 		return table;
+	}
+
+	//TODO 處理不同失敗狀況
+	public boolean join(String tableId, Player player) {
+		Table table = tables.get(tableId);
+
+		if (table == null) { return false; }
+		if (table.isFull()) { return false; }
+
+		table.join(player);
+
+		try {
+			wsServer.broadcast(WsMsg.refreshTable);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return true;
 	}
 
 	public ArrayList<Table> getTables() {
