@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import us.dontcareabout.PickRed.client.RpcService;
 import us.dontcareabout.PickRed.client.RpcServiceAsync;
 import us.dontcareabout.PickRed.client.data.MyPlayerReadyEvent.MyPlayerReadyHandler;
 import us.dontcareabout.PickRed.client.data.TableDataReadyEvent.TableDataReadyHandler;
+import us.dontcareabout.PickRed.client.ui.UiCenter;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
 
@@ -81,6 +83,25 @@ public class DataCenter {
 
 	public static HandlerRegistration addTableDataReady(TableDataReadyHandler handler) {
 		return eventBus.addHandler(TableDataReadyEvent.TYPE, handler);
+	}
+
+	public static void joinTable(final Table table) {
+		rpc.joinTable(table.getId(), new AsyncCallback<Boolean>() {
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					UiCenter.tableView(table);
+				} else {
+					Window.alert("加入失敗");
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 	// ========= //
 }
