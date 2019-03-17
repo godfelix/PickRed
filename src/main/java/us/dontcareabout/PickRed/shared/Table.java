@@ -45,6 +45,10 @@ public class Table implements Serializable {
 		return Collections.unmodifiableList(playerList);
 	}
 
+	public int getPlayerAmount() {
+		return playerList.size();
+	}
+
 	public int getMax() {
 		return max;
 	}
