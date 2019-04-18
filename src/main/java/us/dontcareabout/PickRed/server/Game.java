@@ -103,14 +103,16 @@ public class Game {
 	}
 
 	/**
-	 * @return 所有玩家手中的牌數
+	 * 計算玩家手中的牌，為 0 時表示遊戲結束。
+	 *
+	 * @return true 遊戲結束
 	 */
-	public int getAllHandCardNumber() {
+	public boolean isEnd() {
 		int number = 0;
 		for (Player player : players) {
 			number += handCard.get(player).size();
 		}
-		return number;
+		return number == 0;
 	}
 
 	/**
