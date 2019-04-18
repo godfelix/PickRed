@@ -15,6 +15,7 @@ public class Game {
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
 	private int playerNumber;
+	private int roundLeft = 24;
 	public ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
 	public Map<Player, ArrayList<Card>> handCard = new HashMap<>();
@@ -66,7 +67,7 @@ public class Game {
 	}
 
 	private Card[][] dealCard() {
-		int handCardNumber = 24 / playerNumber;
+		int handCardNumber = roundLeft / playerNumber;
 		Card[][] cards = new Card[playerNumber][handCardNumber];
 
 		for (int j = 0; j < handCardNumber; j++) {
@@ -113,16 +114,13 @@ public class Game {
 	}
 
 	/**
-	 * 計算玩家手中的牌，為 0 時表示遊戲結束。
+	 * 玩家手中沒皆沒牌時結束遊戲。
 	 *
 	 * @return true 遊戲結束
 	 */
 	public boolean isEnd() {
-		int number = 0;
-		for (Player player : players) {
-			number += handCard.get(player).size();
-		}
-		return number == 0;
+		roundLeft -= 1;
+		return roundLeft + 1 == 0;
 	}
 
 	/**
