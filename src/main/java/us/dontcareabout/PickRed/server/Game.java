@@ -14,6 +14,7 @@ public class Game {
 	public ArrayList<Player> players;
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
+	private int playerNumber;
 	public ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
 	public Map<Player, ArrayList<Card>> handCard = new HashMap<>();
@@ -21,8 +22,20 @@ public class Game {
 
 	public Game(ArrayList<Player> players) {
 		this.players = players;
+		playerNumber = players.size();
+
 		GMT.shuffling(cards);
-		dealCard();
+		Card[][] dealtCards = dealCard();
+
+		for (int idx = 0; idx < playerNumber; idx++) {
+			handCard.put(players.get(idx), new ArrayList<>(Arrays.asList(dealtCards[idx])));
+			cardsPicked.put(players.get(idx), new ArrayList<Card>());
+		}
+
+		cardsOnDesk.add(drawCard());
+		cardsOnDesk.add(drawCard());
+		cardsOnDesk.add(drawCard());
+		cardsOnDesk.add(drawCard());
 	}
 
 	/**
@@ -52,20 +65,17 @@ public class Game {
 		return cards[cardIdx - 1];
 	}
 
-	private void dealCard() {
-		Card[][] tempCards = new Card[4][6];
+	private Card[][] dealCard() {
+		int handCardNumber = 24 / playerNumber;
+		Card[][] cards = new Card[playerNumber][handCardNumber];
 
-		for (int j = 0; j < 6; j++) {
-			for (int i = 0; i < 4; i++) {
-				tempCards[i][j] = drawCard();
+		for (int j = 0; j < handCardNumber; j++) {
+			for (int i = 0; i < playerNumber; i++) {
+				cards[i][j] = drawCard();
 			}
 		}
 
-		for (int idx = 0; idx < 4; idx++) {
-			cardsOnDesk.add(drawCard());
-			handCard.put(players.get(idx), new ArrayList<>(Arrays.asList(tempCards[idx])));
-			cardsPicked.put(players.get(idx), new ArrayList<Card>());
-		}
+		return cards;
 	}
 
 	/**
