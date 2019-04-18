@@ -11,15 +11,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Game {
-	public ArrayList<Player> players;
+	private ArrayList<Player> players;
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
 	private int playerNumber;
 	private int roundLeft = 24;
-	public ArrayList<Card> cardsOnDesk = new ArrayList<>();
+	private ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
-	public Map<Player, ArrayList<Card>> handCard = new HashMap<>();
-	public Map<Player, ArrayList<Card>> cardsPicked = new HashMap<>();
+	private Map<Player, ArrayList<Card>> handCard = new HashMap<>();
+	private Map<Player, ArrayList<Card>> cardsPicked = new HashMap<>();
 
 	public Game(ArrayList<Player> players) {
 		this.players = players;
@@ -138,5 +138,21 @@ public class Game {
 				}
 			}
 		}
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public ArrayList<Card> getCardsOnDesk() {
+		return cardsOnDesk;
+	}
+
+	public Map<Player, ArrayList<Card>> getHandCard() {
+		return handCard;
+	}
+
+	public Map<Player, ArrayList<Card>> getCardsPicked() {
+		return cardsPicked;
 	}
 }
