@@ -19,7 +19,9 @@ public class FooPlayer extends Player {
 		handCards.add(card);
 	}
 
-	public void playCard(Card card) {
+	public Card playCard(Card card) {
+		handCards.remove(card);
+		return card;
 	}
 
 	public void pickCard(Card card) {
