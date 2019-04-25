@@ -25,6 +25,7 @@ public class FooPlayer extends Player {
 	}
 
 	public void pickCard(Card card) {
+		pickedCards.add(card);
 	}
 
 	public List<Card> getHandCards() {
