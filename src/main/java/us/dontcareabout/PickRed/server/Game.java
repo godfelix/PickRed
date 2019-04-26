@@ -1,7 +1,6 @@
 package us.dontcareabout.PickRed.server;
 
 import us.dontcareabout.PickRed.shared.Card;
-import us.dontcareabout.PickRed.shared.GMT;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Suit;
 
@@ -24,14 +23,7 @@ public class Game {
 			this.players.add(new FooPlayer(player));
 		}
 
-		GMT.shuffling(cards);
-		Card[][] dealtCards = dealCard();
-
-		for (int idx = 0; idx < playerNumber; idx++) {
-			for (Card card : dealtCards[idx]) {
-				this.players.get(idx).recieveCard(card);
-			}
-		}
+		dealCard();
 
 		cardsOnDesk.add(drawCard());
 		cardsOnDesk.add(drawCard());
@@ -66,17 +58,14 @@ public class Game {
 		return cards[cardIdx - 1];
 	}
 
-	private Card[][] dealCard() {
+	private void dealCard() {
 		int handCardNumber = roundLeft / playerNumber;
-		Card[][] cards = new Card[playerNumber][handCardNumber];
 
 		for (int j = 0; j < handCardNumber; j++) {
 			for (int i = 0; i < playerNumber; i++) {
-				cards[i][j] = drawCard();
+				players.get(i).recieveCard(drawCard());
 			}
 		}
-
-		return cards;
 	}
 
 	/**
