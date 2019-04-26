@@ -5,6 +5,8 @@ import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Suit;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class Game {
@@ -130,11 +132,11 @@ public class Game {
 		}
 	}
 
-	public ArrayList<FooPlayer> getPlayers() {
-		return players;
+	public List<FooPlayer> getPlayers() {
+		return Collections.unmodifiableList(players);
 	}
 
-	public ArrayList<Card> getCardsOnDesk() {
-		return cardsOnDesk;
+	public List<Card> getCardsOnDesk() {
+		return Collections.unmodifiableList(cardsOnDesk);
 	}
 }
