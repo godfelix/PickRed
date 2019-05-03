@@ -51,7 +51,9 @@ public class DataCenter {
 	public static void createTable() {
 		rpc.createTable(new AsyncCallback<Table>() {
 			@Override
-			public void onSuccess(Table result) {}
+			public void onSuccess(Table result) {
+				UiCenter.tableView(result);
+			}
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -64,6 +66,15 @@ public class DataCenter {
 
 	public static ArrayList<Table> getTableList() {
 		return tableList;
+	}
+
+	public static Table findTable(String id) {
+		for (Table table : tableList) {
+			if (table.getId().equals(id)) {
+				return table;
+			}
+		}
+		return null;
 	}
 
 	public static void wantTables() {
