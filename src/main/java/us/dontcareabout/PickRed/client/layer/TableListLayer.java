@@ -3,6 +3,8 @@ package us.dontcareabout.PickRed.client.layer;
 import java.util.ArrayList;
 
 import com.sencha.gxt.chart.client.draw.RGB;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.event.StoreAddEvent;
@@ -15,6 +17,7 @@ import com.sencha.gxt.data.shared.event.StoreRemoveEvent;
 import com.sencha.gxt.data.shared.event.StoreSortEvent;
 import com.sencha.gxt.data.shared.event.StoreUpdateEvent;
 
+import us.dontcareabout.PickRed.client.data.DataCenter;
 import us.dontcareabout.PickRed.shared.Table;
 import us.dontcareabout.gxt.client.draw.LSprite;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
@@ -128,7 +131,7 @@ public class TableListLayer extends LayerSprite {
 		private TextButton master = new TextButton();
 		private TextButton status = new TextButton();
 
-		public TableUnit(Table table) {
+		public TableUnit(final Table table) {
 			setBgColor(RGB.LIGHTGRAY);
 			setBgRadius(10);
 
@@ -137,6 +140,13 @@ public class TableListLayer extends LayerSprite {
 
 			status.setText(table.getPlayerList().size() + " / " + table.getMax());
 			add(status);
+
+			addSpriteSelectionHandler(new SpriteSelectionHandler() {
+				@Override
+				public void onSpriteSelect(SpriteSelectionEvent event) {
+					DataCenter.joinTable(table);
+				}
+			});
 		}
 
 		@Override
