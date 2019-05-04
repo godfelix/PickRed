@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.sencha.gxt.chart.client.draw.RGB;
 
+import us.dontcareabout.PickRed.client.data.DataCenter;
+import us.dontcareabout.PickRed.client.data.TableDataReadyEvent;
+import us.dontcareabout.PickRed.client.data.TableDataReadyEvent.TableDataReadyHandler;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
-import us.dontcareabout.gwt.client.Console;
 import us.dontcareabout.gxt.client.draw.LayerContainer;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
@@ -18,6 +20,18 @@ public class TableView extends LayerContainer {
 
 	public TableView() {
 		startBtn.setBgColor(RGB.RED);
+		startBtn.setHidden(true);
+		addLayer(startBtn);
+
+		DataCenter.addTableDataReady(new TableDataReadyHandler() {
+			@Override
+			public void onTableDataReady(TableDataReadyEvent event) {
+				if (table == null) { return; }
+
+				table = DataCenter.findTable(table.getId());
+				refresh();
+			}
+		});
 	}
 
 	@Override
@@ -44,14 +58,13 @@ public class TableView extends LayerContainer {
 	}
 
 	private void refresh() {
-		clear();
+		for (PlayerLayer pl : players) {
+			pl.undeploy();
+		}
 		players.clear();
 
-		addLayer(startBtn);
-
-		Console.log(table.getPlayerList().size());
 		for (Player player : table.getPlayerList()) {
-			PlayerLayer pl = (player == table.getMaster()) ? new MasterPlayer(player) : new MemberPlayer(player);
+			PlayerLayer pl = (player.equals(table.getMaster())) ? new MasterPlayer(player) : new MemberPlayer(player);
 			players.add(pl);
 			addLayer(pl);
 		}
@@ -88,13 +101,22 @@ public class TableView extends LayerContainer {
 			button.setLY(getHeight() - 55);
 			button.resize(getWidth() - 10, 50);
 		}
+
+		boolean hereIam() {
+			return player.equals(DataCenter.getMyPlayer());
+		}
 	}
 
 	private class MasterPlayer extends PlayerLayer {
 		MasterPlayer(Player player) {
 			super(player);
 			setBgColor(RGB.PINK);
-			button.setText("關桌");
+
+			if (hereIam()) {
+				button.setText("關桌");
+			} else {
+				button.setHidden(true);
+			}
 		}
 	}
 
@@ -102,7 +124,14 @@ public class TableView extends LayerContainer {
 		MemberPlayer(Player player) {
 			super(player);
 			setBgColor(RGB.LIGHTGRAY);
-			button.setText("踢");
+
+			if (DataCenter.getMyPlayer().equals(table.getMaster())) {
+				button.setText("踢");
+			} else if (hereIam()) {
+				button.setText("離開");
+			} else {
+				button.setHidden(true);
+			}
 		}
 	}
 }
