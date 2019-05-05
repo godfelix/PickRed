@@ -59,6 +59,10 @@ public class TableCenter {
 		return new ArrayList<>(tables.values());
 	}
 
+	public void startGame(String tableId) {
+		tablecast(tableId, "Game Start");//FIXME
+	}
+
 	/**
 	 * 對某一 {@link Table} 下的玩家作 {@link WebSocketServer#multicast(java.util.List, String)}
 	 */
