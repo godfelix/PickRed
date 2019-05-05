@@ -3,6 +3,8 @@ package us.dontcareabout.PickRed.client.ui;
 import java.util.ArrayList;
 
 import com.sencha.gxt.chart.client.draw.RGB;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
 import us.dontcareabout.PickRed.client.data.DataCenter;
 import us.dontcareabout.PickRed.client.data.TableDataReadyEvent;
@@ -21,6 +23,12 @@ public class TableView extends LayerContainer {
 	public TableView() {
 		startBtn.setBgColor(RGB.RED);
 		startBtn.setHidden(true);
+		startBtn.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				DataCenter.startGame(table);
+			}
+		});
 		addLayer(startBtn);
 
 		DataCenter.addTableDataReady(new TableDataReadyHandler() {
@@ -69,7 +77,13 @@ public class TableView extends LayerContainer {
 			addLayer(pl);
 		}
 
+		startBtn.setHidden(!(table.isFull() && iAmMaster()));
+
 		onResize(getOffsetWidth(), getOffsetHeight());
+	}
+
+	private boolean iAmMaster() {
+		return DataCenter.getMyPlayer().equals(table.getMaster());
 	}
 
 	private class PlayerLayer extends LayerSprite {
@@ -125,7 +139,7 @@ public class TableView extends LayerContainer {
 			super(player);
 			setBgColor(RGB.LIGHTGRAY);
 
-			if (DataCenter.getMyPlayer().equals(table.getMaster())) {
+			if (iAmMaster()) {
 				button.setText("踢");
 			} else if (hereIam()) {
 				button.setText("離開");

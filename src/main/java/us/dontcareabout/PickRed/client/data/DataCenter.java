@@ -114,5 +114,20 @@ public class DataCenter {
 			}
 		});
 	}
+
+	public static void startGame(Table table) {
+		rpc.startGame(table.getId(), new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				//後續是統一接受 ws 訊息，所以這裡想不到要作啥事情...
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
 	// ========= //
 }
