@@ -25,7 +25,7 @@ public class TableCenter {
 	}
 
 	public Table create(Player master) {
-		Table table = new Table(UUID.randomUUID().toString(), master, 3);//FIXME 改為自行指定
+		Table table = new Table(UUID.randomUUID().toString(), master, 2);//FIXME 改為自行指定
 		tables.put(table.getId(), table);
 
 		try {
@@ -57,5 +57,23 @@ public class TableCenter {
 
 	public ArrayList<Table> getTables() {
 		return new ArrayList<>(tables.values());
+	}
+
+	/**
+	 * 對某一 {@link Table} 下的玩家作 {@link WebSocketServer#multicast(java.util.List, String)}
+	 */
+	private void tablecast(String tableId, String message) {
+		Table table = tables.get(tableId);
+		ArrayList<String> sessionList = new ArrayList<>();
+
+		for (Player p : table.getPlayerList()) {
+			sessionList.add(p.id);
+		}
+
+		try {
+			wsServer.multicast(sessionList, "Game Start");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
