@@ -11,24 +11,25 @@ public class TestGame {
 
 	public static void main(String[] args) {
 		testFooPlayer();
-		autoTestGamePlay();
+
+		int[] testPlayerNumber = {2, 3, 4};
+		for (int playerNumber : testPlayerNumber) {
+			autoTestGamePlay(playerNumber);
+		}
+
 		testGamePlay();
 	}
 
-	private static void autoTestGamePlay() {
+	private static void autoTestGamePlay(int playerNumber) {
 		Game.debug = true;
 
 		ArrayList<Player> players = new ArrayList<>();
+		for (int i = 0; i < playerNumber; i++) {
+			players.add(new Player(String.valueOf(i), String.valueOf(i)));
+		}
 
-		players.add(new Player("1", "1"));
-		players.add(new Player("2", "2"));
-		players.add(new Player("3", "3"));
-		players.add(new Player("4", "4"));
+		TestCase testCase = new TestCase(playerNumber);
 
-		TestCase testCase = new TestCase();
-		testCase.player4();
-
-		int playerNumber = players.size();
 		Game game = new Game(players);
 
 		// 測試 桌牌
@@ -71,7 +72,6 @@ public class TestGame {
 		players.add(new Player("1", "1"));
 		players.add(new Player("2", "2"));
 		players.add(new Player("3", "3"));
-		players.add(new Player("4", "4"));
 
 		int playerNumber = players.size();
 
@@ -150,7 +150,21 @@ class TestCase {
 	public String handCards;
 	public String cardsPicked;
 
-	public void player4() {
+	public TestCase(int playerNumber) {
+		switch (playerNumber) {
+			case 2:
+				player2();
+				break;
+			case 3:
+				player3();
+				break;
+			case 4:
+				player4();
+		}
+	}
+
+	private void player4() {
+		System.out.println("test 4 players");
 		expCardsOnDesk = "[heart[12], heart[13], diamond[1], diamond[2]]";
 
 		handCards = "[[spade[1], spade[5], spade[9], spade[13], heart[4], heart[8]], " +
@@ -162,5 +176,29 @@ class TestCase {
 				"[spade[6], spade[4], diamond[8], diamond[2], spade[10], diamond[10], diamond[12], heart[12], heart[5], club[5], club[7], heart[3], heart[9], heart[1]], " +
 				"[spade[7], spade[3], diamond[9], spade[1], spade[11], diamond[11], diamond[13], heart[13], heart[6], club[4], club[8], heart[2], heart[10], club[10], club[12], spade[12]], " +
 				"[diamond[6], diamond[4], spade[8], spade[2], heart[7], club[3], club[9], club[1], heart[11], club[11], club[13], spade[13]]]";
+	}
+
+	private void player3() {
+		System.out.println("test 3 players");
+		expCardsOnDesk = "[heart[12], heart[13], diamond[1], diamond[2]]";
+
+		handCards = "[[spade[1], spade[4], spade[7], spade[10], spade[13], heart[3], heart[6], heart[9]], " +
+				"[spade[2], spade[5], spade[8], spade[11], heart[1], heart[4], heart[7], heart[10]], " +
+				"[spade[3], spade[6], spade[9], spade[12], heart[2], heart[5], heart[8], heart[11]]]";
+
+		cardsPicked = "[[diamond[6], diamond[4], spade[7], spade[3], diamond[9], spade[1], spade[10], diamond[10], diamond[12], heart[12], heart[6], club[4], club[8], heart[2], heart[9], heart[1]], " +
+				"[spade[5], diamond[5], diamond[7], diamond[3], spade[8], spade[2], spade[11], diamond[11], diamond[13], heart[13], club[6], heart[4], heart[7], club[3], club[9], club[1], heart[10], club[10], club[12], spade[12]], " +
+				"[spade[6], spade[4], diamond[8], diamond[2], spade[9], diamond[1], heart[5], club[5], club[7], heart[3], heart[8], club[2], heart[11], club[11], club[13], spade[13]]]";
+	}
+
+	private void player2() {
+		System.out.println("test 2 players");
+		expCardsOnDesk = "[heart[12], heart[13], diamond[1], diamond[2]]";
+
+		handCards = "[[spade[1], spade[3], spade[5], spade[7], spade[9], spade[11], spade[13], heart[2], heart[4], heart[6], heart[8], heart[10]], " +
+				"[spade[2], spade[4], spade[6], spade[8], spade[10], spade[12], heart[1], heart[3], heart[5], heart[7], heart[9], heart[11]]]";
+
+		cardsPicked = "[[spade[5], diamond[5], diamond[7], diamond[3], spade[7], spade[3], diamond[9], spade[1], spade[9], diamond[1], spade[11], diamond[11], diamond[13], heart[13], club[6], heart[4], heart[6], club[4], club[8], heart[2], heart[8], club[2], heart[10], club[10], club[12], spade[12]], " +
+				"[diamond[6], diamond[4], spade[6], spade[4], diamond[8], diamond[2], spade[8], spade[2], spade[10], diamond[10], diamond[12], heart[12], heart[5], club[5], club[7], heart[3], heart[7], club[3], club[9], club[1], heart[9], heart[1], heart[11], club[11], club[13], spade[13]]]";
 	}
 }
