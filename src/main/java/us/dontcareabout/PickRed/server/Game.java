@@ -1,6 +1,7 @@
 package us.dontcareabout.PickRed.server;
 
 import us.dontcareabout.PickRed.shared.Card;
+import us.dontcareabout.PickRed.shared.GMT;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Suit;
 
@@ -25,6 +26,7 @@ public class Game {
 			this.players.add(new FooPlayer(player));
 		}
 
+		GMT.shuffling(cards);
 		dealCard();
 
 		cardsOnDesk.add(drawCard());
@@ -105,15 +107,6 @@ public class Game {
 		return 0;
 	}
 
-	/**
-	 * 玩家手中沒皆沒牌時結束遊戲。
-	 *
-	 * @return true 遊戲結束
-	 */
-	public boolean isEnd() {
-		roundLeft -= 1;
-		return roundLeft + 1 == 0;
-	}
 
 	/**
 	 * 依照牌的分數由大到小排序。
