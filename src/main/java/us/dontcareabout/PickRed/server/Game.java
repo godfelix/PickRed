@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public class Game {
+	public static boolean debug = false;
 	private ArrayList<FooPlayer> players = new ArrayList<>();
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
@@ -26,7 +27,10 @@ public class Game {
 			this.players.add(new FooPlayer(player));
 		}
 
-		GMT.shuffling(cards);
+		if (!debug) {
+			GMT.shuffling(cards);
+		}
+
 		dealCard();
 
 		cardsOnDesk.add(drawCard());

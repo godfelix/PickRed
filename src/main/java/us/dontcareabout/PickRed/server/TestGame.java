@@ -11,10 +11,61 @@ public class TestGame {
 
 	public static void main(String[] args) {
 		testFooPlayer();
+		autoTestGamePlay();
 		testGamePlay();
 	}
 
+	private static void autoTestGamePlay() {
+		Game.debug = true;
+
+		ArrayList<Player> players = new ArrayList<>();
+
+		players.add(new Player("1", "1"));
+		players.add(new Player("2", "2"));
+		players.add(new Player("3", "3"));
+		players.add(new Player("4", "4"));
+
+		TestCase testCase = new TestCase();
+		testCase.player4();
+
+		int playerNumber = players.size();
+		Game game = new Game(players);
+
+		// 測試 桌牌
+		test(game.getCardsOnDesk(), testCase.expCardsOnDesk);
+
+		// 測試 玩家手牌
+		ArrayList<String> handCards = new ArrayList<>();
+		for (FooPlayer player : game.getPlayers()) {
+			handCards.add(player.getHandCards().toString());
+		}
+		test(handCards, testCase.handCards);
+
+		int turn = 0;
+
+		while (turn < 24) {
+			int playerIdx = turn % playerNumber;
+			FooPlayer player = game.getPlayers().get(playerIdx);
+
+			Card card = player.playCard(player.getHandCards().get(0));
+
+			game.playCard(player, card);
+			game.playCard(player, game.drawCard());
+
+			turn += 1;
+		}
+
+		// 測試 撿牌
+		ArrayList<String> pickedCards = new ArrayList<>();
+		for (FooPlayer player : game.getPlayers()) {
+			pickedCards.add(player.getPickedCards().toString());
+		}
+		test(pickedCards, testCase.cardsPicked);
+	}
+
 	private static void testGamePlay() {
+		Game.debug = false;
+
 		ArrayList<Player> players = new ArrayList<>();
 
 		players.add(new Player("1", "1"));
@@ -91,5 +142,25 @@ public class TestGame {
 		} else {
 			System.out.println("Pass!");
 		}
+	}
+}
+
+class TestCase {
+	public String expCardsOnDesk;
+	public String handCards;
+	public String cardsPicked;
+
+	public void player4() {
+		expCardsOnDesk = "[heart[12], heart[13], diamond[1], diamond[2]]";
+
+		handCards = "[[spade[1], spade[5], spade[9], spade[13], heart[4], heart[8]], " +
+				"[spade[2], spade[6], spade[10], heart[1], heart[5], heart[9]], " +
+				"[spade[3], spade[7], spade[11], heart[2], heart[6], heart[10]], " +
+				"[spade[4], spade[8], spade[12], heart[3], heart[7], heart[11]]]";
+
+		cardsPicked = "[[spade[5], diamond[5], diamond[7], diamond[3], spade[9], diamond[1], club[6], heart[4], heart[8], club[2]], " +
+				"[spade[6], spade[4], diamond[8], diamond[2], spade[10], diamond[10], diamond[12], heart[12], heart[5], club[5], club[7], heart[3], heart[9], heart[1]], " +
+				"[spade[7], spade[3], diamond[9], spade[1], spade[11], diamond[11], diamond[13], heart[13], heart[6], club[4], club[8], heart[2], heart[10], club[10], club[12], spade[12]], " +
+				"[diamond[6], diamond[4], spade[8], spade[2], heart[7], club[3], club[9], club[1], heart[11], club[11], club[13], spade[13]]]";
 	}
 }
