@@ -4,11 +4,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
+import us.dontcareabout.PickRed.shared.Table;
+
 public class UiCenter {
 	private final static Viewport viewport = new Viewport();
 
 	private static FloorView mainView;
-
+	private static TableView tableView;
 
 	public static void start() {
 		RootPanel.get().add(viewport);
@@ -21,6 +23,15 @@ public class UiCenter {
 		}
 
 		switchTo(mainView);
+	}
+
+	public static void tableView(Table table) {
+		if (tableView == null) {
+			tableView = new TableView();
+		}
+
+		tableView.setData(table);
+		switchTo(tableView);
 	}
 
 	private static void switchTo(Widget widget) {

@@ -15,6 +15,7 @@ public interface RpcService extends RemoteService{
 	ArrayList<Table> getTables();
 	Table createTable();
 	boolean joinTable(String tableId);
+	void startGame(String tableId);
 
 	void broadcast(String message);
 }

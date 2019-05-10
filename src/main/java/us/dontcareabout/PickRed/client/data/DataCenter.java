@@ -51,7 +51,9 @@ public class DataCenter {
 	public static void createTable() {
 		rpc.createTable(new AsyncCallback<Table>() {
 			@Override
-			public void onSuccess(Table result) {}
+			public void onSuccess(Table result) {
+				UiCenter.tableView(result);
+			}
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -64,6 +66,15 @@ public class DataCenter {
 
 	public static ArrayList<Table> getTableList() {
 		return tableList;
+	}
+
+	public static Table findTable(String id) {
+		for (Table table : tableList) {
+			if (table.getId().equals(id)) {
+				return table;
+			}
+		}
+		return null;
 	}
 
 	public static void wantTables() {
@@ -94,6 +105,21 @@ public class DataCenter {
 				} else {
 					Window.alert("加入失敗");
 				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+
+	public static void startGame(Table table) {
+		rpc.startGame(table.getId(), new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				//後續是統一接受 ws 訊息，所以這裡想不到要作啥事情...
 			}
 
 			@Override

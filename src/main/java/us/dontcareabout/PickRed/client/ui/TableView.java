@@ -3,10 +3,14 @@ package us.dontcareabout.PickRed.client.ui;
 import java.util.ArrayList;
 
 import com.sencha.gxt.chart.client.draw.RGB;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
+import us.dontcareabout.PickRed.client.data.DataCenter;
+import us.dontcareabout.PickRed.client.data.TableDataReadyEvent;
+import us.dontcareabout.PickRed.client.data.TableDataReadyEvent.TableDataReadyHandler;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
-import us.dontcareabout.gwt.client.Console;
 import us.dontcareabout.gxt.client.draw.LayerContainer;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
@@ -18,6 +22,24 @@ public class TableView extends LayerContainer {
 
 	public TableView() {
 		startBtn.setBgColor(RGB.RED);
+		startBtn.setHidden(true);
+		startBtn.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				DataCenter.startGame(table);
+			}
+		});
+		addLayer(startBtn);
+
+		DataCenter.addTableDataReady(new TableDataReadyHandler() {
+			@Override
+			public void onTableDataReady(TableDataReadyEvent event) {
+				if (table == null) { return; }
+
+				table = DataCenter.findTable(table.getId());
+				refresh();
+			}
+		});
 	}
 
 	@Override
@@ -44,19 +66,24 @@ public class TableView extends LayerContainer {
 	}
 
 	private void refresh() {
-		clear();
+		for (PlayerLayer pl : players) {
+			pl.undeploy();
+		}
 		players.clear();
 
-		addLayer(startBtn);
-
-		Console.log(table.getPlayerList().size());
 		for (Player player : table.getPlayerList()) {
-			PlayerLayer pl = (player == table.getMaster()) ? new MasterPlayer(player) : new MemberPlayer(player);
+			PlayerLayer pl = (player.equals(table.getMaster())) ? new MasterPlayer(player) : new MemberPlayer(player);
 			players.add(pl);
 			addLayer(pl);
 		}
 
+		startBtn.setHidden(!(table.isFull() && iAmMaster()));
+
 		onResize(getOffsetWidth(), getOffsetHeight());
+	}
+
+	private boolean iAmMaster() {
+		return DataCenter.getMyPlayer().equals(table.getMaster());
 	}
 
 	private class PlayerLayer extends LayerSprite {
@@ -88,13 +115,22 @@ public class TableView extends LayerContainer {
 			button.setLY(getHeight() - 55);
 			button.resize(getWidth() - 10, 50);
 		}
+
+		boolean hereIam() {
+			return player.equals(DataCenter.getMyPlayer());
+		}
 	}
 
 	private class MasterPlayer extends PlayerLayer {
 		MasterPlayer(Player player) {
 			super(player);
 			setBgColor(RGB.PINK);
-			button.setText("關桌");
+
+			if (hereIam()) {
+				button.setText("關桌");
+			} else {
+				button.setHidden(true);
+			}
 		}
 	}
 
@@ -102,7 +138,14 @@ public class TableView extends LayerContainer {
 		MemberPlayer(Player player) {
 			super(player);
 			setBgColor(RGB.LIGHTGRAY);
-			button.setText("踢");
+
+			if (iAmMaster()) {
+				button.setText("踢");
+			} else if (hereIam()) {
+				button.setText("離開");
+			} else {
+				button.setHidden(true);
+			}
 		}
 	}
 }

@@ -34,6 +34,11 @@ public class RpcServiceImpl extends GFServiceServlet implements RpcService {
 	}
 
 	@Override
+	public ArrayList<Table> getTables() {
+		return tableCenter.getTables();
+	}
+
+	@Override
 	public Table createTable() {
 		return tableCenter.create(getMyPlayer());
 	}
@@ -44,8 +49,8 @@ public class RpcServiceImpl extends GFServiceServlet implements RpcService {
 	}
 
 	@Override
-	public ArrayList<Table> getTables() {
-		return tableCenter.getTables();
+	public void startGame(String tableId) {
+		tableCenter.startGame(tableId);
 	}
 
 	@Override
