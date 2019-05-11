@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -15,6 +16,10 @@ import javax.servlet.http.HttpSessionListener;
  */
 @WebListener
 public class SessionClub implements HttpSessionListener {
+	public static final String ATTRIBUTE_NAME = "GF:SessionClub";
+
+	/** 是否已經塞進 {@link ServletContext} 的 flag */
+	private boolean injectContext;
 	private HashMap<String, Set<String>> clubMap = new HashMap<>();
 	private HashMap<String, Set<String>> sessionMap = new HashMap<>();
 
@@ -83,7 +88,15 @@ public class SessionClub implements HttpSessionListener {
 	}
 
 	@Override
-	public void sessionCreated(HttpSessionEvent event) {}
+	public void sessionCreated(HttpSessionEvent event) {
+		//TODO 改用 Spring 解決？
+		//由於 instance 是由 JSP Container 建立的
+		//所以必須塞進 ServletContext 當中，這樣其他地方才能拿來用
+		if (injectContext) { return; }
+
+		event.getSession().getServletContext().setAttribute(ATTRIBUTE_NAME, this);
+		injectContext = true;
+	}
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent event) {
