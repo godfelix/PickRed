@@ -5,11 +5,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
 //Refactory GF
 /**
  * 處理 session 的社團參與狀況 XD。
  */
-public class SessionClub {
+@WebListener
+public class SessionClub implements HttpSessionListener {
 	private HashMap<String, Set<String>> clubMap = new HashMap<>();
 	private HashMap<String, Set<String>> sessionMap = new HashMap<>();
 
@@ -40,7 +45,19 @@ public class SessionClub {
 	}
 
 	public void close(String club) {
+		for (String session : sessionSet(club)) {
+			clubSet(session).remove(club);
+		}
+
 		clubMap.remove(club);
+	}
+
+	public void dead(String session) {
+		for (String club : clubSet(session)) {
+			sessionSet(club).remove(session);
+		}
+
+		clubMap.remove(session);
 	}
 
 	public Set<String> sessionSet(String id) {
@@ -63,5 +80,13 @@ public class SessionClub {
 		}
 
 		return result;
+	}
+
+	@Override
+	public void sessionCreated(HttpSessionEvent event) {}
+
+	@Override
+	public void sessionDestroyed(HttpSessionEvent event) {
+		dead(event.getSession().getId());
 	}
 }
