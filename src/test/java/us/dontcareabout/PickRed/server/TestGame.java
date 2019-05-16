@@ -48,7 +48,8 @@ public class TestGame {
 			int playerIdx = turn % playerNumber;
 			PickRedPlayer player = game.getPlayers().get(playerIdx);
 
-			Card card = player.playCard(player.getHandCards().get(0));
+			Card card = player.getHandCards().get(0);
+			player.playCard(card);
 
 			game.playCard(player, card);
 			game.playCard(player, game.drawCard());
@@ -89,7 +90,8 @@ public class TestGame {
 				System.out.println(eachPlayer.name + ", " + eachPlayer.getHandCards());
 			}
 
-			Card card = player.playCard(player.getHandCards().get(0));
+			Card card = player.getHandCards().get(0);
+			player.playCard(card);
 			System.out.println(player.name + " plays card: " + card);
 
 			game.playCard(player, card);
@@ -119,14 +121,10 @@ public class TestGame {
 
 		// 測試 手牌
 		test(pickRedPlayer1.getHandCards(), "[diamond[1], heart[13], spade[5]]");
-
-
-		Card playCard1 = pickRedPlayer1.playCard(card1);
-		Card playCard2 = pickRedPlayer1.playCard(card2);
-
+		
 		// 測試 出牌
-		test(playCard1, "diamond[1]");
-		test(playCard2, "heart[13]");
+		pickRedPlayer1.playCard(card1);
+		pickRedPlayer1.playCard(card2);
 		test(pickRedPlayer1.getHandCards(), "[spade[5]]");
 
 		// 測試 撿牌
