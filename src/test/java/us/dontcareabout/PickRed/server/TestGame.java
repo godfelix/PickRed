@@ -130,8 +130,7 @@ public class TestGame {
 		test(pickRedPlayer1.getHandCards(), "[spade[5]]");
 
 		// 測試 撿牌
-		pickRedPlayer1.pickCard(card1);
-		pickRedPlayer1.pickCard(card2);
+		pickRedPlayer1.pickCard(card1, card2);
 		test(pickRedPlayer1.getPickedCards(), "[diamond[1], heart[13]]");
 	}
 

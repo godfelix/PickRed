@@ -24,8 +24,9 @@ public class PickRedPlayer extends Player {
 		return card;
 	}
 
-	public void pickCard(Card card) {
-		pickedCards.add(card);
+	public void pickCard(Card card1, Card card2) {
+		pickedCards.add(card1);
+		pickedCards.add(card2);
 	}
 
 	public List<Card> getHandCards() {

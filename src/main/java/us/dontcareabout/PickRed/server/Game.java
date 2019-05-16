@@ -81,8 +81,7 @@ public class Game {
 	 */
 	private void pick(Player player, Card card1, Card card2) {
 		PickRedPlayer pickRedPlayer = players.get(players.indexOf(player));
-		pickRedPlayer.pickCard(card1);
-		pickRedPlayer.pickCard(card2);
+		pickRedPlayer.pickCard(card1, card2);
 	}
 
 	/**
