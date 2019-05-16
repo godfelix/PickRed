@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FooPlayer extends Player {
+public class PickRedPlayer extends Player {
 	private ArrayList<Card> handCards = new ArrayList<>();
 	private ArrayList<Card> pickedCards = new ArrayList<>();
 
-	public FooPlayer(Player player) {
+	public PickRedPlayer(Player player) {
 		super(player.id, player.name);
 	}
 

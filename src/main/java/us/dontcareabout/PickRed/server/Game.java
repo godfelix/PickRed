@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Game {
 	public static boolean debug = false;
-	private ArrayList<FooPlayer> players = new ArrayList<>();
+	private ArrayList<PickRedPlayer> players = new ArrayList<>();
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
 	private int playerNumber;
@@ -24,7 +24,7 @@ public class Game {
 		playerNumber = players.size();
 
 		for (Player player : players) {
-			this.players.add(new FooPlayer(player));
+			this.players.add(new PickRedPlayer(player));
 		}
 
 		if (!debug) {
@@ -80,9 +80,9 @@ public class Game {
 	 * 玩家撿牌。
 	 */
 	private void pick(Player player, Card card1, Card card2) {
-		FooPlayer fooPlayer = players.get(players.indexOf(player));
-		fooPlayer.pickCard(card1);
-		fooPlayer.pickCard(card2);
+		PickRedPlayer pickRedPlayer = players.get(players.indexOf(player));
+		pickRedPlayer.pickCard(card1);
+		pickRedPlayer.pickCard(card2);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class Game {
 		}
 	}
 
-	public List<FooPlayer> getPlayers() {
+	public List<PickRedPlayer> getPlayers() {
 		return Collections.unmodifiableList(players);
 	}
 

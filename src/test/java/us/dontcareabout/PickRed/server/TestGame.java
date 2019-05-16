@@ -37,7 +37,7 @@ public class TestGame {
 
 		// 測試 玩家手牌
 		ArrayList<String> handCards = new ArrayList<>();
-		for (FooPlayer player : game.getPlayers()) {
+		for (PickRedPlayer player : game.getPlayers()) {
 			handCards.add(player.getHandCards().toString());
 		}
 		test(handCards, testCase.handCards);
@@ -46,7 +46,7 @@ public class TestGame {
 
 		while (turn < 24) {
 			int playerIdx = turn % playerNumber;
-			FooPlayer player = game.getPlayers().get(playerIdx);
+			PickRedPlayer player = game.getPlayers().get(playerIdx);
 
 			Card card = player.playCard(player.getHandCards().get(0));
 
@@ -58,7 +58,7 @@ public class TestGame {
 
 		// 測試 撿牌
 		ArrayList<String> pickedCards = new ArrayList<>();
-		for (FooPlayer player : game.getPlayers()) {
+		for (PickRedPlayer player : game.getPlayers()) {
 			pickedCards.add(player.getPickedCards().toString());
 		}
 		test(pickedCards, testCase.cardsPicked);
@@ -81,11 +81,11 @@ public class TestGame {
 
 		while (turn < 24) {
 			int playerIdx = turn % playerNumber;
-			FooPlayer player = game.getPlayers().get(playerIdx);
+			PickRedPlayer player = game.getPlayers().get(playerIdx);
 
 			System.out.println("\nCards on desk:\n" + game.getCardsOnDesk());
 
-			for (FooPlayer eachPlayer : game.getPlayers()) {
+			for (PickRedPlayer eachPlayer : game.getPlayers()) {
 				System.out.println(eachPlayer.name + ", " + eachPlayer.getHandCards());
 			}
 
@@ -101,38 +101,38 @@ public class TestGame {
 		}
 
 		System.out.println("\nPicked cards:");
-		for (FooPlayer eachPlayer : game.getPlayers()) {
+		for (PickRedPlayer eachPlayer : game.getPlayers()) {
 			System.out.println(eachPlayer.name + ", " + eachPlayer.getPickedCards());
 		}
 	}
 
 	private static void testFooPlayer() {
 		Player player1 = new Player("1", "A");
-		FooPlayer fooPlayer1 = new FooPlayer(player1);
+		PickRedPlayer pickRedPlayer1 = new PickRedPlayer(player1);
 
 		Card card1 = new Card(Suit.diamond, 1);
 		Card card2 = new Card(Suit.heart, 13);
 		Card card3 = new Card(Suit.spade, 5);
-		fooPlayer1.recieveCard(card1);
-		fooPlayer1.recieveCard(card2);
-		fooPlayer1.recieveCard(card3);
+		pickRedPlayer1.recieveCard(card1);
+		pickRedPlayer1.recieveCard(card2);
+		pickRedPlayer1.recieveCard(card3);
 
 		// 測試 手牌
-		test(fooPlayer1.getHandCards(), "[diamond[1], heart[13], spade[5]]");
+		test(pickRedPlayer1.getHandCards(), "[diamond[1], heart[13], spade[5]]");
 
 
-		Card playCard1 = fooPlayer1.playCard(card1);
-		Card playCard2 = fooPlayer1.playCard(card2);
+		Card playCard1 = pickRedPlayer1.playCard(card1);
+		Card playCard2 = pickRedPlayer1.playCard(card2);
 
 		// 測試 出牌
 		test(playCard1, "diamond[1]");
 		test(playCard2, "heart[13]");
-		test(fooPlayer1.getHandCards(), "[spade[5]]");
+		test(pickRedPlayer1.getHandCards(), "[spade[5]]");
 
 		// 測試 撿牌
-		fooPlayer1.pickCard(card1);
-		fooPlayer1.pickCard(card2);
-		test(fooPlayer1.getPickedCards(), "[diamond[1], heart[13]]");
+		pickRedPlayer1.pickCard(card1);
+		pickRedPlayer1.pickCard(card2);
+		test(pickRedPlayer1.getPickedCards(), "[diamond[1], heart[13]]");
 	}
 
 	private static void test(Object test, Object exp) {
