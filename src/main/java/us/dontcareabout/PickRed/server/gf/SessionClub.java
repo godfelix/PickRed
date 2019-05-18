@@ -62,7 +62,7 @@ public class SessionClub implements HttpSessionListener {
 			sessionSet(club).remove(session);
 		}
 
-		clubMap.remove(session);
+		sessionMap.remove(session);
 	}
 
 	public Set<String> sessionSet(String id) {
