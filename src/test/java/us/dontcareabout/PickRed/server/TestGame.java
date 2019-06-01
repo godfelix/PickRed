@@ -1,6 +1,7 @@
 package us.dontcareabout.PickRed.server;
 
 
+import us.dontcareabout.PickRed.exception.TestFailedException;
 import us.dontcareabout.PickRed.shared.Card;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Suit;
@@ -164,11 +165,12 @@ public class TestGame {
 	}
 
 	private static void test(Object test, Object exp) {
-		if (!(test.toString().equals(exp.toString()))) {
-			System.out.println("failed! " + "Expect: " + exp.toString() +
-					",\n but get: " + test.toString());
-		} else {
+		if ((test.toString().equals(exp.toString()))) {
 			System.out.println("Pass!");
+		} else {
+			String msg = "failed! " + "Expect: " + exp.toString() +
+					",\n but get: " + test.toString();
+			throw new TestFailedException(msg);
 		}
 	}
 }
