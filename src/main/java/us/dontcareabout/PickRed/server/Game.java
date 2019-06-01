@@ -57,6 +57,10 @@ public class Game {
 		return cards[cardIdx - 1];
 	}
 
+	public void playHandCard(Player player, Card card) {
+		players.get(player).playCard(card);
+	}
+
 	private void dealCard(ArrayList<Player> players) {
 		int handCardNumber = 24 / playerNumber;
 
@@ -126,9 +130,15 @@ public class Game {
 			}
 		}
 	}
+	
+	public List<Card> getHandCards(Player player) {
+		List<Card> cards = players.get(player).getHandCards();
+		return Collections.unmodifiableList(cards);
+	}
 
-	public HashMap<Player, PickRedPlayer> getPlayers() {
-		return players;
+	public List<Card> getPickedCards(Player player) {
+		List<Card> cards = players.get(player).getPickedCards();
+		return Collections.unmodifiableList(cards);
 	}
 
 	public List<Card> getCardsOnDesk() {
