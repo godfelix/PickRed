@@ -7,16 +7,16 @@ import us.dontcareabout.PickRed.shared.Suit;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class Game {
 	public static boolean debug = false;
-	private ArrayList<PickRedPlayer> players = new ArrayList<>();
+	private HashMap<Player, PickRedPlayer> players = new HashMap<>();
 	private Card[] cards = Card.genDeck();
 	private int cardIdx = 0;
 	private int playerNumber;
-	private int roundLeft = 24;
 	private ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
 
@@ -24,14 +24,14 @@ public class Game {
 		playerNumber = players.size();
 
 		for (Player player : players) {
-			this.players.add(new PickRedPlayer(player));
+			this.players.put(player, new PickRedPlayer(player));
 		}
 
 		if (!debug) {
 			GMT.shuffling(cards);
 		}
 
-		dealCard();
+		dealCard(players);
 
 		cardsOnDesk.add(drawCard());
 		cardsOnDesk.add(drawCard());
@@ -66,12 +66,12 @@ public class Game {
 		return cards[cardIdx - 1];
 	}
 
-	private void dealCard() {
-		int handCardNumber = roundLeft / playerNumber;
+	private void dealCard(ArrayList<Player> players) {
+		int handCardNumber = 24 / playerNumber;
 
 		for (int j = 0; j < handCardNumber; j++) {
-			for (int i = 0; i < playerNumber; i++) {
-				players.get(i).recieveCard(drawCard());
+			for (Player eachPlayer : players) {
+				this.players.get(eachPlayer).recieveCard(drawCard());
 			}
 		}
 	}
@@ -80,8 +80,7 @@ public class Game {
 	 * 玩家撿牌。
 	 */
 	private void pick(Player player, Card card1, Card card2) {
-		PickRedPlayer pickRedPlayer = players.get(players.indexOf(player));
-		pickRedPlayer.pickCard(card1, card2);
+		players.get(player).pickCard(card1, card2);
 	}
 
 	/**
@@ -128,8 +127,8 @@ public class Game {
 		}
 	}
 
-	public List<PickRedPlayer> getPlayers() {
-		return Collections.unmodifiableList(players);
+	public HashMap<Player, PickRedPlayer> getPlayers() {
+		return players;
 	}
 
 	public List<Card> getCardsOnDesk() {

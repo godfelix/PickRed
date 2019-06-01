@@ -37,8 +37,8 @@ public class TestGame {
 
 		// 測試 玩家手牌
 		ArrayList<String> handCards = new ArrayList<>();
-		for (PickRedPlayer player : game.getPlayers()) {
-			handCards.add(player.getHandCards().toString());
+		for (Player eachPlayer : players) {
+			handCards.add(game.getPlayers().get(eachPlayer).getHandCards().toString());
 		}
 		test(handCards, testCase.handCards);
 
@@ -46,10 +46,10 @@ public class TestGame {
 
 		while (turn < 24) {
 			int playerIdx = turn % playerNumber;
-			PickRedPlayer player = game.getPlayers().get(playerIdx);
+			Player player = players.get(playerIdx);
 
-			Card card = player.getHandCards().get(0);
-			player.playCard(card);
+			Card card = game.getPlayers().get(player).getHandCards().get(0);
+			game.getPlayers().get(player).playCard(card);
 
 			game.playCard(player, card);
 			game.playCard(player, game.drawCard());
@@ -59,14 +59,14 @@ public class TestGame {
 
 		// 測試 撿牌
 		ArrayList<String> pickedCards = new ArrayList<>();
-		for (PickRedPlayer player : game.getPlayers()) {
-			pickedCards.add(player.getPickedCards().toString());
+		for (Player eachPlayer : players) {
+			pickedCards.add(game.getPlayers().get(eachPlayer).getPickedCards().toString());
 		}
 		test(pickedCards, testCase.cardsPicked);
 	}
 
 	private static void testGamePlay() {
-		Game.debug = false;
+		Game.debug = true;
 
 		ArrayList<Player> players = new ArrayList<>();
 
@@ -82,16 +82,16 @@ public class TestGame {
 
 		while (turn < 24) {
 			int playerIdx = turn % playerNumber;
-			PickRedPlayer player = game.getPlayers().get(playerIdx);
+			Player player = players.get(playerIdx);
 
 			System.out.println("\nCards on desk:\n" + game.getCardsOnDesk());
 
-			for (PickRedPlayer eachPlayer : game.getPlayers()) {
-				System.out.println(eachPlayer.name + ", " + eachPlayer.getHandCards());
+			for (Player eachPlayer : players) {
+				System.out.println(eachPlayer.name + ", " + game.getPlayers().get(eachPlayer).getHandCards());
 			}
 
-			Card card = player.getHandCards().get(0);
-			player.playCard(card);
+			Card card = game.getPlayers().get(player).getHandCards().get(0);
+			game.getPlayers().get(player).playCard(card);
 			System.out.println(player.name + " plays card: " + card);
 
 			game.playCard(player, card);
@@ -103,8 +103,8 @@ public class TestGame {
 		}
 
 		System.out.println("\nPicked cards:");
-		for (PickRedPlayer eachPlayer : game.getPlayers()) {
-			System.out.println(eachPlayer.name + ", " + eachPlayer.getPickedCards());
+		for (Player eachPlayer : players) {
+			System.out.println(eachPlayer.name + ", " + game.getPlayers().get(eachPlayer).getPickedCards());
 		}
 	}
 
@@ -121,7 +121,7 @@ public class TestGame {
 
 		// 測試 手牌
 		test(pickRedPlayer1.getHandCards(), "[diamond[1], heart[13], spade[5]]");
-		
+
 		// 測試 出牌
 		pickRedPlayer1.playCard(card1);
 		pickRedPlayer1.playCard(card2);
