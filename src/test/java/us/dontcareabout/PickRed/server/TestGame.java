@@ -21,8 +21,6 @@ public class TestGame {
 	}
 
 	private static void autoTestGamePlay(int playerNumber) {
-		Game.debug = true;
-
 		ArrayList<Player> players = new ArrayList<>();
 		for (int i = 0; i < playerNumber; i++) {
 			players.add(new Player(String.valueOf(i), String.valueOf(i)));
@@ -30,7 +28,7 @@ public class TestGame {
 
 		TestCase testCase = new TestCase(playerNumber);
 
-		Game game = new Game(players);
+		Game game = new Game(players, Card.genDeck());
 
 		// 測試 桌牌
 		test(game.getCardsOnDesk(), testCase.expCardsOnDesk);
@@ -66,8 +64,6 @@ public class TestGame {
 	}
 
 	private static void testGamePlay() {
-		Game.debug = true;
-
 		ArrayList<Player> players = new ArrayList<>();
 
 		players.add(new Player("1", "1"));

@@ -12,23 +12,28 @@ import java.util.List;
 
 
 public class Game {
-	public static boolean debug = false;
 	private HashMap<Player, PickRedPlayer> players = new HashMap<>();
-	private Card[] cards = Card.genDeck();
+	private Card[] cards;
 	private int cardIdx = 0;
 	private int playerNumber;
 	private ArrayList<Card> cardsOnDesk = new ArrayList<>();
 
-
 	public Game(ArrayList<Player> players) {
+		cards = Card.genDeck();
+		GMT.shuffling(cards);
+		initGame(players);
+	}
+
+	Game(ArrayList<Player> players, Card[] cards) {
+		this.cards = cards;
+		initGame(players);
+	}
+
+	private void initGame(ArrayList<Player> players) {
 		playerNumber = players.size();
 
 		for (Player player : players) {
 			this.players.put(player, new PickRedPlayer(player));
-		}
-
-		if (!debug) {
-			GMT.shuffling(cards);
 		}
 
 		dealCard(players);
