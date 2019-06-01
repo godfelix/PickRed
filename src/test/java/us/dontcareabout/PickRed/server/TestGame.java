@@ -12,6 +12,7 @@ public class TestGame {
 
 	public static void main(String[] args) {
 		testFooPlayer();
+		testGame();
 
 		int[] testPlayerNumber = {2, 3, 4};
 		for (int playerNumber : testPlayerNumber) {
@@ -19,6 +20,55 @@ public class TestGame {
 		}
 
 		testGamePlay();
+	}
+
+	private static void testGame() {
+		System.out.println("測試 Game");
+		ArrayList<Player> players = new ArrayList<>();
+		Player player1 = new Player("1", "1");
+		Player player2 = new Player("2", "2");
+		players.add(player1);
+		players.add(player2);
+
+		Game game = new Game(players, Card.genDeck());
+
+
+		// 測試 constructor / initGame()
+		System.out.println("測 桌牌 / initGame() ");
+		test(game.getCardsOnDesk(), "[heart[12], heart[13], diamond[1], diamond[2]]");
+
+		// 測試 drawCard()
+		System.out.println("測 drawCard() ");
+		Card card1 = game.drawCard();
+		Card card2 = game.drawCard();
+		test(card1, new Card(Suit.diamond, 3));
+		test(card2, new Card(Suit.diamond, 4));
+
+		// 測試 addCardsOnDesk
+		System.out.println("測 addCardsOnDesk() ");
+		game.addCardsOnDesk(card1);
+		test(game.getCardsOnDesk(), "[heart[12], heart[13], diamond[1], diamond[2], diamond[3]]");
+		game.addCardsOnDesk(card2);
+		test(game.getCardsOnDesk(), "[heart[12], heart[13], diamond[1], diamond[2], diamond[3], diamond[4]]");
+
+		// 測試 removeCardsOnDesk
+		System.out.println("測 removeCardsOnDesk() ");
+		game.removeCardsOnDesk(card1);
+		test(game.getCardsOnDesk(), "[heart[12], heart[13], diamond[1], diamond[2], diamond[4]]");
+		game.removeCardsOnDesk(card2);
+		test(game.getCardsOnDesk(), "[heart[12], heart[13], diamond[1], diamond[2]]");
+
+		// 測試 pick()
+		System.out.println("測 pick()");
+		boolean res;
+		res = game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 1));
+		test(res, false);
+		res = game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 9));
+		test(res, true);
+		res = game.pick(player2, new Card(Suit.club, 11), new Card(Suit.spade, 11));
+		test(res, true);
+		test(game.getPlayers().get(player1).getPickedCards(), "[diamond[1], diamond[9]]");
+		test(game.getPlayers().get(player2).getPickedCards(), "[club[11], spade[11]]");
 	}
 
 	private static void autoTestGamePlay(int playerNumber) {
