@@ -44,26 +44,12 @@ public class Game {
 		cardsOnDesk.add(drawCard());
 	}
 
-	/**
-	 * 玩家出排或翻牌，若能與桌牌能湊成 10，則撿牌。
-	 * 撿分數最高的牌。
-	 */
-	public void playCard(Player player, Card card) {
-		ArrayList<Card> sortedCardsOnDesk = new ArrayList(cardsOnDesk);
-		sortCardsByScore(sortedCardsOnDesk);
-
-		for (Card cardDesk : sortedCardsOnDesk) {
-			if (card.number < 10 && card.number + cardDesk.number != 10) {
-				continue;
-			}
-			if (card.number >= 10 && card.number != cardDesk.number) {
-				continue;
-			}
-			cardsOnDesk.remove(cardDesk);
-			pick(player, card, cardDesk);
-			return;
-		}
+	public void addCardsOnDesk(Card card) {
 		cardsOnDesk.add(card);
+	}
+
+	public void removeCardsOnDesk(Card card) {
+		cardsOnDesk.remove(card);
 	}
 
 	public Card drawCard() {
@@ -83,9 +69,18 @@ public class Game {
 
 	/**
 	 * 玩家撿牌。
+	 *
+	 * @return true 當兩張牌皆小於 10 且相加等於 10 或兩張牌皆大於 10 且相等
 	 */
-	private void pick(Player player, Card card1, Card card2) {
+	public boolean pick(Player player, Card card1, Card card2) {
+		if (card1.number < 10 && card1.number + card2.number != 10) {
+			return false;
+		}
+		if (card1.number >= 10 && card1.number != card2.number) {
+			return false;
+		}
 		players.get(player).pickCard(card1, card2);
+		return true;
 	}
 
 	/**
@@ -118,7 +113,7 @@ public class Game {
 	/**
 	 * 依照牌的分數由大到小排序。
 	 */
-	private void sortCardsByScore(ArrayList<Card> cards) {
+	public void sortCardsByScore(ArrayList<Card> cards) {
 		int size = cards.size();
 
 		for (int i = size - 1; i > 0; i--) {

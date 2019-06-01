@@ -31,9 +31,11 @@ public class TestGame {
 		Game game = new Game(players, Card.genDeck());
 
 		// 測試 桌牌
+		System.out.println("測試 桌牌");
 		test(game.getCardsOnDesk(), testCase.expCardsOnDesk);
 
 		// 測試 玩家手牌
+		System.out.println("測試 玩家手牌");
 		ArrayList<String> handCards = new ArrayList<>();
 		for (Player eachPlayer : players) {
 			handCards.add(game.getPlayers().get(eachPlayer).getHandCards().toString());
@@ -46,16 +48,33 @@ public class TestGame {
 			int playerIdx = turn % playerNumber;
 			Player player = players.get(playerIdx);
 
-			Card card = game.getPlayers().get(player).getHandCards().get(0);
-			game.getPlayers().get(player).playCard(card);
+			Card card1 = game.getPlayers().get(player).getHandCards().get(0);
+			game.getPlayers().get(player).playCard(card1);
+			Card card2 = game.drawCard();
 
-			game.playCard(player, card);
-			game.playCard(player, game.drawCard());
+			for (Card card : new Card[]{card1, card2}) {
+				ArrayList<Card> sortedCards = new ArrayList<Card>(game.getCardsOnDesk());
+				game.sortCardsByScore(sortedCards);
+
+				boolean picked = false;
+				for (Card cardDesk : sortedCards) {
+					if (game.pick(player, card, cardDesk)) {
+						game.removeCardsOnDesk(cardDesk);
+						picked = true;
+						break;
+					}
+				}
+
+				if (!picked) {
+					game.addCardsOnDesk(card);
+				}
+			}
 
 			turn += 1;
 		}
 
 		// 測試 撿牌
+		System.out.println("測試 撿牌");
 		ArrayList<String> pickedCards = new ArrayList<>();
 		for (Player eachPlayer : players) {
 			pickedCards.add(game.getPlayers().get(eachPlayer).getPickedCards().toString());
@@ -72,7 +91,7 @@ public class TestGame {
 
 		int playerNumber = players.size();
 
-		Game game = new Game(players);
+		Game game = new Game(players, Card.genDeck());
 
 		int turn = 0;
 
@@ -86,14 +105,30 @@ public class TestGame {
 				System.out.println(eachPlayer.name + ", " + game.getPlayers().get(eachPlayer).getHandCards());
 			}
 
-			Card card = game.getPlayers().get(player).getHandCards().get(0);
-			game.getPlayers().get(player).playCard(card);
-			System.out.println(player.name + " plays card: " + card);
+			Card card1 = game.getPlayers().get(player).getHandCards().get(0);
+			game.getPlayers().get(player).playCard(card1);
+			System.out.println(player.name + " plays card: " + card1);
 
-			game.playCard(player, card);
-			card = game.drawCard();
-			System.out.println("Drew card: " + card);
-			game.playCard(player, card);
+			Card card2 = game.drawCard();
+			System.out.println("Drew card: " + card2);
+
+			for (Card card : new Card[]{card1, card2}) {
+				ArrayList<Card> sortedCards = new ArrayList<Card>(game.getCardsOnDesk());
+				game.sortCardsByScore(sortedCards);
+
+				boolean picked = false;
+				for (Card cardDesk : sortedCards) {
+					if (game.pick(player, card, cardDesk)) {
+						game.removeCardsOnDesk(cardDesk);
+						picked = true;
+						break;
+					}
+				}
+
+				if (!picked) {
+					game.addCardsOnDesk(card);
+				}
+			}
 
 			turn += 1;
 		}
