@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
@@ -18,7 +19,7 @@ public class TableCenter {
 	//Refactory 應該改成用 Spring 注入，這樣就不會傳 WebSockerServer 進來？
 	private final WebSocketServer wsServer;
 	private final HashMap<String, Table> tables = new HashMap<>();
-	private final Gson gson = new Gson();
+	private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").create();
 
 	public TableCenter(WebSocketServer wsServer) {
 		this.wsServer = wsServer;

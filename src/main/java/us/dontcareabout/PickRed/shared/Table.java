@@ -13,7 +13,7 @@ public class Table implements Serializable {
 	private Player master;
 	private List<Player> playerList = new ArrayList<>();
 	private int max;
-	private long createTime;
+	private Date createTime;
 
 	//just for GWT RPC
 	Table() {}
@@ -23,7 +23,7 @@ public class Table implements Serializable {
 		this.master = master;
 		this.max = max;
 		join(master);
-		createTime = new Date().getTime();
+		createTime = new Date();
 	}
 
 	public boolean join(Player player) {
@@ -61,7 +61,7 @@ public class Table implements Serializable {
 		return master;
 	}
 
-	public long getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
@@ -77,7 +77,8 @@ public class Table implements Serializable {
 		this.max = max;
 	}
 
-	public void setCreateTime(long createTime) {
+	@Deprecated	//Just for gwt-jackson
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
