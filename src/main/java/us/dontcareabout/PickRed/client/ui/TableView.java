@@ -61,7 +61,10 @@ public class TableView extends LayerContainer {
 	}
 
 	public void setData(Table table) {
-		this.table = table;
+		//如果是「加入」的 case，那麼 RPC 的過程中就會觸發 TableDataReadyEvent
+		//但是 RPC 結束後才（以舊的 instance）呼叫到這裡
+		//所以直接無差別重新從 DataCenter 當中再取一次...... XD
+		this.table = DataCenter.findTable(table.getId());;
 		refresh();
 	}
 
