@@ -13,7 +13,6 @@ public class PickRedEP extends GFEP {
 	public PickRedEP() {
 		needFeature(Feature.Canvas);
 		needFeature(Feature.WebSocket);
-		WSClient.init();
 	}
 
 	@Override
