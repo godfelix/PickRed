@@ -2,6 +2,7 @@ package us.dontcareabout.PickRed.client.data;
 
 import java.util.ArrayList;
 
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -12,13 +13,21 @@ import us.dontcareabout.PickRed.client.RpcService;
 import us.dontcareabout.PickRed.client.RpcServiceAsync;
 import us.dontcareabout.PickRed.client.data.MyPlayerReadyEvent.MyPlayerReadyHandler;
 import us.dontcareabout.PickRed.client.data.TableDataReadyEvent.TableDataReadyHandler;
+import us.dontcareabout.PickRed.client.gf.WSClient;
+import us.dontcareabout.PickRed.client.gf.WSProcessor;
 import us.dontcareabout.PickRed.client.ui.UiCenter;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
+import us.dontcareabout.PickRed.shared.WsMsg;
+import us.dontcareabout.PickRed.shared.gf.SyncData;
 
 public class DataCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
 	private final static RpcServiceAsync rpc = GWT.create(RpcService.class);
+	private final static WSClient wsClient = new WSClient("spring/websocket");
+	static {
+		wsClient.addProcessor(new TableProcessor());
+	}
 
 	// ==== myPlayer ==== //
 	private static Player myPlayer;
@@ -130,4 +139,32 @@ public class DataCenter {
 		});
 	}
 	// ========= //
+
+	static class TableProcessor extends WSProcessor {
+		interface Mapper extends ObjectMapper<SyncData<Table>> {}
+		private Mapper mapper = GWT.create(Mapper.class);
+
+		public TableProcessor() {
+			super(WsMsg.TABLE);
+		}
+
+		@Override
+		public void process(String data) {
+			SyncData<Table> sd = mapper.read(data);
+
+			//目前看起來，如果只是要處理 list 的話
+			//一律都先 remove 掉然後 ADD / UPDATE 再 add 回去就好了？
+			//ADD 也這樣搞是擔心 WS 給的資料是 RPC 裡頭已經有的（雖然發生機率應該不大）
+			tableList.removeAll(sd.getData());
+
+			switch(sd.getType()) {
+			case ADD:
+			case UPDATE:
+				tableList.addAll(sd.getData());
+			default: //純粹為了消除 IDE warning....
+			}
+
+			eventBus.fireEvent(new TableDataReadyEvent());
+		}
+	}
 }

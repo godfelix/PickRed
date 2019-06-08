@@ -11,7 +11,7 @@ public class Table implements Serializable {
 
 	private String id;
 	private Player master;
-	private ArrayList<Player> playerList = new ArrayList<>();
+	private List<Player> playerList = new ArrayList<>();
 	private int max;
 	private Date createTime;
 
@@ -63,5 +63,52 @@ public class Table implements Serializable {
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setMaster(Player master) {
+		this.master = master;
+	}
+
+	public void setMax(int max) {
+		this.max = max;
+	}
+
+	@Deprecated	//Just for gwt-jackson
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public void setPlayerList(List<Player> list) {
+		playerList.clear();
+		playerList.addAll(list);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Table other = (Table) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

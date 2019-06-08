@@ -5,20 +5,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Table;
 import us.dontcareabout.PickRed.shared.WsMsg;
+import us.dontcareabout.PickRed.shared.gf.SyncData;
+import us.dontcareabout.PickRed.shared.gf.SyncType;
 import us.dontcareabout.gwt.server.WebSocketServer;
 
-/* TODO 精簡傳輸方式
- * 現在是只透過 websocket 炸 notify，client 透過 RPC 重新
- * 應該改成 client 第一次重撈全部
- * 之後是開桌狀況有變化時，直接透過 websocket 把資料打給 client
- */
 public class TableCenter {
 	//Refactory 應該改成用 Spring 注入，這樣就不會傳 WebSockerServer 進來？
 	private final WebSocketServer wsServer;
 	private final HashMap<String, Table> tables = new HashMap<>();
+	private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").create();
 
 	public TableCenter(WebSocketServer wsServer) {
 		this.wsServer = wsServer;
@@ -28,8 +29,12 @@ public class TableCenter {
 		Table table = new Table(UUID.randomUUID().toString(), master, 2);//FIXME 改為自行指定
 		tables.put(table.getId(), table);
 
+		SyncData<Table> dp = new SyncData<>();
+		dp.setType(SyncType.ADD);
+		dp.addData(table);
+
 		try {
-			wsServer.broadcast(WsMsg.refreshTable);
+			wsServer.broadcast(WsMsg.TABLE + gson.toJson(dp));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -46,8 +51,12 @@ public class TableCenter {
 
 		table.join(player);
 
+		SyncData<Table> dp = new SyncData<>();
+		dp.setType(SyncType.UPDATE);
+		dp.addData(table);
+
 		try {
-			wsServer.broadcast(WsMsg.refreshTable);
+			wsServer.broadcast(WsMsg.TABLE + gson.toJson(dp));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,7 +84,7 @@ public class TableCenter {
 		}
 
 		try {
-			wsServer.multicast(sessionList, "Game Start");
+			wsServer.multicast(sessionList, message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
