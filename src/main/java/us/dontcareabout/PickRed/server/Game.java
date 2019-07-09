@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class Game {
-	private HashMap<Player, PickRedPlayer> players = new HashMap<>();
+	private HashMap<Player, PickRedPlayer> playersMap = new HashMap<>();
 	private Card[] cards;
 	private int cardIdx = 0;
 	private int playerNumber;
@@ -33,7 +33,7 @@ public class Game {
 		playerNumber = players.size();
 
 		for (Player player : players) {
-			this.players.put(player, new PickRedPlayer(player));
+			playersMap.put(player, new PickRedPlayer(player));
 		}
 
 		dealCard(players);
@@ -58,7 +58,7 @@ public class Game {
 	}
 
 	public void playHandCard(Player player, Card card) {
-		players.get(player).playCard(card);
+		playersMap.get(player).playCard(card);
 	}
 
 	private void dealCard(ArrayList<Player> players) {
@@ -66,7 +66,7 @@ public class Game {
 
 		for (int j = 0; j < handCardNumber; j++) {
 			for (Player eachPlayer : players) {
-				this.players.get(eachPlayer).recieveCard(drawCard());
+				playersMap.get(eachPlayer).recieveCard(drawCard());
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public class Game {
 		if (card1.number >= 10 && card1.number != card2.number) {
 			return false;
 		}
-		players.get(player).pickCard(card1, card2);
+		playersMap.get(player).pickCard(card1, card2);
 		return true;
 	}
 
@@ -132,12 +132,12 @@ public class Game {
 	}
 	
 	public List<Card> getHandCards(Player player) {
-		List<Card> cards = players.get(player).getHandCards();
+		List<Card> cards = playersMap.get(player).getHandCards();
 		return Collections.unmodifiableList(cards);
 	}
 
 	public List<Card> getPickedCards(Player player) {
-		List<Card> cards = players.get(player).getPickedCards();
+		List<Card> cards = playersMap.get(player).getPickedCards();
 		return Collections.unmodifiableList(cards);
 	}
 
