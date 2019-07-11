@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TestGame {
 
 	public static void main(String[] args) {
-		testFooPlayer();
+		testPickRedPlayer();
 		testGame();
 
 		int[] testPlayerNumber = {2, 3, 4};
@@ -190,7 +190,7 @@ public class TestGame {
 		}
 	}
 
-	private static void testFooPlayer() {
+	private static void testPickRedPlayer() {
 		Player player1 = new Player("1", "A");
 		PickRedPlayer pickRedPlayer1 = new PickRedPlayer(player1);
 
@@ -212,6 +212,11 @@ public class TestGame {
 		// 測試 撿牌
 		pickRedPlayer1.pickCard(card1, card2);
 		test(pickRedPlayer1.getPickedCards(), "[diamond[1], heart[13]]");
+
+		// 測試 resetCards()
+		pickRedPlayer1.resetCards();
+		test(pickRedPlayer1.getHandCards(), "[]");
+		test(pickRedPlayer1.getPickedCards(), "[]");
 	}
 
 	private static void test(Object test, Object exp) {
