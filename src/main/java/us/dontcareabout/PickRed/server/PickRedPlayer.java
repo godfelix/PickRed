@@ -8,17 +8,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class PickRedPlayer extends Player {
-	private ArrayList<Card> handCards;
-	private ArrayList<Card> pickedCards;
+	private ArrayList<Card> handCards = new ArrayList<>();
+	private ArrayList<Card> pickedCards = new ArrayList<>();
 
 	public PickRedPlayer(Player player) {
 		super(player.id, player.name);
-		resetCards();
-	}
-
-	public void resetCards() {
-		handCards = new ArrayList<>();
-		pickedCards = new ArrayList<>();
 	}
 
 	public void recieveCard(Card card) {

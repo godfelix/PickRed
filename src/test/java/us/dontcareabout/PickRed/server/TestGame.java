@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TestGame {
 
 	public static void main(String[] args) {
-		testPickRedPlayer();
+		testFooPlayer();
 		testGame();
 
 		int[] testPlayerNumber = {2, 3, 4};
@@ -61,11 +61,11 @@ public class TestGame {
 		// 測試 pick()
 		System.out.println("測 pick()");
 		boolean res;
-		res = Game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 1));
+		res = game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 1));
 		test(res, false);
-		res = Game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 9));
+		res = game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 9));
 		test(res, true);
-		res = Game.pick(player2, new Card(Suit.club, 11), new Card(Suit.spade, 11));
+		res = game.pick(player2, new Card(Suit.club, 11), new Card(Suit.spade, 11));
 		test(res, true);
 		test(game.getPickedCards(player1), "[diamond[1], diamond[9]]");
 		test(game.getPickedCards(player2), "[club[11], spade[11]]");
@@ -109,7 +109,7 @@ public class TestGame {
 
 				boolean picked = false;
 				for (Card cardDesk : sortedCards) {
-					if (Game.pick(player, card, cardDesk)) {
+					if (game.pick(player, card, cardDesk)) {
 						game.removeCardsOnDesk(cardDesk);
 						picked = true;
 						break;
@@ -169,7 +169,7 @@ public class TestGame {
 
 				boolean picked = false;
 				for (Card cardDesk : sortedCards) {
-					if (Game.pick(player, card, cardDesk)) {
+					if (game.pick(player, card, cardDesk)) {
 						game.removeCardsOnDesk(cardDesk);
 						picked = true;
 						break;
@@ -190,7 +190,7 @@ public class TestGame {
 		}
 	}
 
-	private static void testPickRedPlayer() {
+	private static void testFooPlayer() {
 		Player player1 = new Player("1", "A");
 		PickRedPlayer pickRedPlayer1 = new PickRedPlayer(player1);
 
@@ -212,11 +212,6 @@ public class TestGame {
 		// 測試 撿牌
 		pickRedPlayer1.pickCard(card1, card2);
 		test(pickRedPlayer1.getPickedCards(), "[diamond[1], heart[13]]");
-
-		// 測試 resetCards()
-		pickRedPlayer1.resetCards();
-		test(pickRedPlayer1.getHandCards(), "[]");
-		test(pickRedPlayer1.getPickedCards(), "[]");
 	}
 
 	private static void test(Object test, Object exp) {

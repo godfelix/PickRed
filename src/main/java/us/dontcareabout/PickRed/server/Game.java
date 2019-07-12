@@ -5,11 +5,14 @@ import us.dontcareabout.PickRed.shared.GMT;
 import us.dontcareabout.PickRed.shared.Player;
 import us.dontcareabout.PickRed.shared.Suit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class Game {
-	private static HashMap<String, PickRedPlayer> playersMap = new HashMap<>();
+	private HashMap<Player, PickRedPlayer> playersMap = new HashMap<>();
 	private Card[] cards;
 	private int cardIdx = 0;
 	private int playerNumber;
@@ -30,7 +33,7 @@ public class Game {
 		playerNumber = players.size();
 
 		for (Player player : players) {
-			addPlayer(player);
+			playersMap.put(player, new PickRedPlayer(player));
 		}
 
 		dealCard(players);
@@ -40,17 +43,6 @@ public class Game {
 		cardsOnDesk.add(drawCard());
 		cardsOnDesk.add(drawCard());
 	}
-
-	private void addPlayer(Player player) {
-		PickRedPlayer prPlayer = playersMap.get(player.id);
-		if (prPlayer == null) {
-			playersMap.put(player.id, new PickRedPlayer(player));
-			return;
-		}
-		prPlayer.resetCards();
-		prPlayer.name = player.name;
-	}
-
 
 	public void addCardsOnDesk(Card card) {
 		cardsOnDesk.add(card);
@@ -66,7 +58,7 @@ public class Game {
 	}
 
 	public void playHandCard(Player player, Card card) {
-		playersMap.get(player.id).playCard(card);
+		playersMap.get(player).playCard(card);
 	}
 
 	private void dealCard(ArrayList<Player> players) {
@@ -74,7 +66,7 @@ public class Game {
 
 		for (int j = 0; j < handCardNumber; j++) {
 			for (Player eachPlayer : players) {
-				playersMap.get(eachPlayer.id).recieveCard(drawCard());
+				playersMap.get(eachPlayer).recieveCard(drawCard());
 			}
 		}
 	}
@@ -84,14 +76,14 @@ public class Game {
 	 *
 	 * @return true 當兩張牌皆小於 10 且相加等於 10 或兩張牌皆大於 10 且相等
 	 */
-	public static boolean pick(Player player, Card card1, Card card2) {
+	public boolean pick(Player player, Card card1, Card card2) {
 		if (card1.number < 10 && card1.number + card2.number != 10) {
 			return false;
 		}
 		if (card1.number >= 10 && card1.number != card2.number) {
 			return false;
 		}
-		playersMap.get(player.id).pickCard(card1, card2);
+		playersMap.get(player).pickCard(card1, card2);
 		return true;
 	}
 
@@ -138,22 +130,18 @@ public class Game {
 			}
 		}
 	}
-
+	
 	public List<Card> getHandCards(Player player) {
-		List<Card> cards = playersMap.get(player.id).getHandCards();
+		List<Card> cards = playersMap.get(player).getHandCards();
 		return Collections.unmodifiableList(cards);
 	}
 
 	public List<Card> getPickedCards(Player player) {
-		List<Card> cards = playersMap.get(player.id).getPickedCards();
+		List<Card> cards = playersMap.get(player).getPickedCards();
 		return Collections.unmodifiableList(cards);
 	}
 
 	public List<Card> getCardsOnDesk() {
 		return Collections.unmodifiableList(cardsOnDesk);
-	}
-
-	public static Map<String, PickRedPlayer> getAllPlayers() {
-		return Collections.unmodifiableMap(playersMap);
 	}
 }
