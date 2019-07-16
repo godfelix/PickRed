@@ -61,11 +61,11 @@ public class TestGame {
 		// 測試 pick()
 		System.out.println("測 pick()");
 		boolean res;
-		res = game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 1));
+		res = Game.pick(game.getPRPlayer(player1), new Card(Suit.diamond, 1), new Card(Suit.diamond, 1));
 		test(res, false);
-		res = game.pick(player1, new Card(Suit.diamond, 1), new Card(Suit.diamond, 9));
+		res = Game.pick(game.getPRPlayer(player1), new Card(Suit.diamond, 1), new Card(Suit.diamond, 9));
 		test(res, true);
-		res = game.pick(player2, new Card(Suit.club, 11), new Card(Suit.spade, 11));
+		res = Game.pick(game.getPRPlayer(player2), new Card(Suit.club, 11), new Card(Suit.spade, 11));
 		test(res, true);
 		test(game.getPickedCards(player1), "[diamond[1], diamond[9]]");
 		test(game.getPickedCards(player2), "[club[11], spade[11]]");
@@ -109,7 +109,7 @@ public class TestGame {
 
 				boolean picked = false;
 				for (Card cardDesk : sortedCards) {
-					if (game.pick(player, card, cardDesk)) {
+					if (Game.pick(game.getPRPlayer(player), card, cardDesk)) {
 						game.removeCardsOnDesk(cardDesk);
 						picked = true;
 						break;
@@ -169,7 +169,7 @@ public class TestGame {
 
 				boolean picked = false;
 				for (Card cardDesk : sortedCards) {
-					if (game.pick(player, card, cardDesk)) {
+					if (Game.pick(game.getPRPlayer(player), card, cardDesk)) {
 						game.removeCardsOnDesk(cardDesk);
 						picked = true;
 						break;

@@ -76,14 +76,14 @@ public class Game {
 	 *
 	 * @return true 當兩張牌皆小於 10 且相加等於 10 或兩張牌皆大於 10 且相等
 	 */
-	public boolean pick(Player player, Card card1, Card card2) {
+	public static boolean pick(PickRedPlayer prPlayer, Card card1, Card card2) {
 		if (card1.number < 10 && card1.number + card2.number != 10) {
 			return false;
 		}
 		if (card1.number >= 10 && card1.number != card2.number) {
 			return false;
 		}
-		playersMap.get(player).pickCard(card1, card2);
+		prPlayer.pickCard(card1, card2);
 		return true;
 	}
 
@@ -130,7 +130,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	public List<Card> getHandCards(Player player) {
 		List<Card> cards = playersMap.get(player).getHandCards();
 		return Collections.unmodifiableList(cards);
@@ -143,5 +143,9 @@ public class Game {
 
 	public List<Card> getCardsOnDesk() {
 		return Collections.unmodifiableList(cardsOnDesk);
+	}
+
+	public PickRedPlayer getPRPlayer(Player player) {
+		return playersMap.get(player);
 	}
 }
