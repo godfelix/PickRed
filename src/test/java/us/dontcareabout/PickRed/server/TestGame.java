@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TestGame {
 
 	public static void main(String[] args) {
-		testFooPlayer();
+		testPickRedPlayer();
 		testGame();
 
 		int[] testPlayerNumber = {2, 3, 4};
@@ -190,7 +190,7 @@ public class TestGame {
 		}
 	}
 
-	private static void testFooPlayer() {
+	private static void testPickRedPlayer() {
 		Player player1 = new Player("1", "A");
 		PickRedPlayer pickRedPlayer1 = new PickRedPlayer(player1);
 
