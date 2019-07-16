@@ -100,7 +100,7 @@ public class TestGame {
 			Player player = players.get(playerIdx);
 
 			Card card1 = game.getHandCards(player).get(0);
-			game.playHandCard(player, card1);
+			game.getPRPlayer(player).playCard(card1);
 			Card card2 = game.drawCard();
 
 			for (Card card : new Card[]{card1, card2}) {
@@ -157,7 +157,7 @@ public class TestGame {
 			}
 
 			Card card1 = game.getHandCards(player).get(0);
-			game.playHandCard(player, card1);
+			game.getPRPlayer(player).playCard(card1);
 			System.out.println(player.name + " plays card: " + card1);
 
 			Card card2 = game.drawCard();

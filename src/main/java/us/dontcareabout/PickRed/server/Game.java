@@ -57,10 +57,6 @@ public class Game {
 		return cards[cardIdx - 1];
 	}
 
-	public void playHandCard(Player player, Card card) {
-		playersMap.get(player).playCard(card);
-	}
-
 	private void dealCard(ArrayList<Player> players) {
 		int handCardNumber = 24 / playerNumber;
 
