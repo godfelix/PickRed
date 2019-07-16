@@ -127,11 +127,6 @@ public class Game {
 		}
 	}
 
-	public List<Card> getHandCards(Player player) {
-		List<Card> cards = playersMap.get(player).getHandCards();
-		return Collections.unmodifiableList(cards);
-	}
-
 	public List<Card> getPickedCards(Player player) {
 		List<Card> cards = playersMap.get(player).getPickedCards();
 		return Collections.unmodifiableList(cards);

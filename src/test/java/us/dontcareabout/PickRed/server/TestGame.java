@@ -89,7 +89,7 @@ public class TestGame {
 		System.out.println("測試 玩家手牌");
 		ArrayList<String> handCards = new ArrayList<>();
 		for (Player eachPlayer : players) {
-			handCards.add(game.getHandCards(eachPlayer).toString());
+			handCards.add(game.getPRPlayer(eachPlayer).getHandCards().toString());
 		}
 		test(handCards, testCase.handCards);
 
@@ -99,7 +99,7 @@ public class TestGame {
 			int playerIdx = turn % playerNumber;
 			Player player = players.get(playerIdx);
 
-			Card card1 = game.getHandCards(player).get(0);
+			Card card1 = game.getPRPlayer(player).getHandCards().get(0);
 			game.getPRPlayer(player).playCard(card1);
 			Card card2 = game.drawCard();
 
@@ -153,10 +153,10 @@ public class TestGame {
 			System.out.println("\nCards on desk:\n" + game.getCardsOnDesk());
 
 			for (Player eachPlayer : players) {
-				System.out.println(eachPlayer.name + ", " + game.getHandCards(eachPlayer));
+				System.out.println(eachPlayer.name + ", " + game.getPRPlayer(eachPlayer).getHandCards());
 			}
 
-			Card card1 = game.getHandCards(player).get(0);
+			Card card1 = game.getPRPlayer(player).getHandCards().get(0);
 			game.getPRPlayer(player).playCard(card1);
 			System.out.println(player.name + " plays card: " + card1);
 
