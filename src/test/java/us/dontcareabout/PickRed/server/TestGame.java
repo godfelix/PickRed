@@ -67,8 +67,8 @@ public class TestGame {
 		test(res, true);
 		res = Game.pick(game.getPRPlayer(player2), new Card(Suit.club, 11), new Card(Suit.spade, 11));
 		test(res, true);
-		test(game.getPickedCards(player1), "[diamond[1], diamond[9]]");
-		test(game.getPickedCards(player2), "[club[11], spade[11]]");
+		test(game.getPRPlayer(player1).getPickedCards(), "[diamond[1], diamond[9]]");
+		test(game.getPRPlayer(player2).getPickedCards(), "[club[11], spade[11]]");
 	}
 
 	private static void autoTestGamePlay(int playerNumber) {
@@ -128,7 +128,7 @@ public class TestGame {
 		System.out.println("測試 撿牌");
 		ArrayList<String> pickedCards = new ArrayList<>();
 		for (Player eachPlayer : players) {
-			pickedCards.add(game.getPickedCards(eachPlayer).toString());
+			pickedCards.add(game.getPRPlayer(eachPlayer).getPickedCards().toString());
 		}
 		test(pickedCards, testCase.cardsPicked);
 	}
@@ -186,7 +186,7 @@ public class TestGame {
 
 		System.out.println("\nPicked cards:");
 		for (Player eachPlayer : players) {
-			System.out.println(eachPlayer.name + ", " + game.getPickedCards(eachPlayer));
+			System.out.println(eachPlayer.name + ", " + game.getPRPlayer(eachPlayer).getPickedCards());
 		}
 	}
 
