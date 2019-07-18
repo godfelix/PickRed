@@ -218,7 +218,7 @@ public class TestGame {
 		if ((test.toString().equals(exp.toString()))) {
 			System.out.println("Pass!");
 		} else {
-			String msg = "failed! " + "Expect: " + exp.toString() +
+			String msg = "\nfailed! " + "Expect: " + exp.toString() +
 					",\n but get: " + test.toString();
 			throw new TestFailedException(msg);
 		}
