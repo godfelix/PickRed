@@ -86,7 +86,7 @@ public class Game {
 	/**
 	 * @return 一張牌的分數
 	 */
-	public int score(Card card) {
+	public static int score(Card card) {
 		if (card.number == 1) {
 			switch (card.suit) {
 				case club:
@@ -113,7 +113,7 @@ public class Game {
 	/**
 	 * 依照牌的分數由大到小排序。
 	 */
-	public void sortCardsByScore(ArrayList<Card> cards) {
+	public static void sortCardsByScore(ArrayList<Card> cards) {
 		int size = cards.size();
 
 		for (int i = size - 1; i > 0; i--) {
